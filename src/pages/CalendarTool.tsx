@@ -153,46 +153,52 @@ export default function CalendarTool() {
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <Link to="/" className="glass-button inline-flex items-center px-4 py-2 rounded-lg">
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            {t('common.back')}
-          </Link>
-          <h1 className="text-3xl font-bold text-white">
-            {t('calendar.title')}
-            {startDate && (
-              <span className="block text-lg font-normal text-white/80 mt-1">
-                {t('calendar.treatmentStart', {
-                  date: startDate.toLocaleDateString(i18n.language, {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric'
-                  })
-                })}
-              </span>
-            )}
-          </h1>
+        {/* Header Section */}
+        <div className="flex flex-col mb-6">
+          <div className="flex items-center justify-between mb-4">
+            <Link to="/" className="glass-button inline-flex items-center px-3 py-2 rounded-lg">
+              <ArrowLeft className="h-5 w-5 mr-1" />
+              <span className="md:inline hidden">{t('common.back')}</span>
+            </Link>
+            <h1 className="text-2xl md:text-3xl font-bold text-white text-center">
+              {t('calendar.title')}
+            </h1>
+            <div className="w-10 md:hidden"></div> {/* Spacer for mobile layout balance */}
+          </div>
+          {startDate && (
+            <div className="text-base text-center text-white/80">
+              {t('calendar.treatmentStart', {
+                date: startDate.toLocaleDateString(i18n.language, {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                })
+              })}
+            </div>
+          )}
         </div>
 
-        <div className="glass-card p-6 mb-8 sticky top-0 z-50 backdrop-blur-lg">
-          <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
-              <input
-                type="text"
-                placeholder={t('calendar.searchPlaceholder')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="glass-input w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white placeholder-white/60"
-              />
-            </div>
-            <div className="flex items-center space-x-4">
+        {/* Search and Filter Section - Mobile Optimized */}
+        <div className="glass-card mb-6 md:sticky md:top-0 backdrop-blur-sm">
+          <div className="p-3 md:p-4 flex flex-col gap-3">
+            {/* Mobile Search and Filter */}
+            <div className="md:hidden flex flex-col gap-2">
               <div className="relative">
-                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
+                <input
+                  type="text"
+                  placeholder={t('calendar.searchPlaceholder')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="glass-input w-full h-9 pl-10 pr-4 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white placeholder-white/50 bg-white/5"
+                />
+              </div>
+              <div className="relative">
+                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
                 <select
                   value={selectedCategory || ''}
                   onChange={(e) => setSelectedCategory(e.target.value || null)}
-                  className="glass-input pl-10 pr-8 py-2 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white"
+                  className="glass-input w-full h-9 pl-10 pr-8 rounded-lg appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white bg-white/5"
                 >
                   <option value="">{t('calendar.allCategories')}</option>
                   {drugCategories.map(category => (
@@ -208,26 +214,69 @@ export default function CalendarTool() {
                     setSearchQuery('');
                     setSelectedCategory(null);
                   }}
-                  className="glass-button p-2 rounded-lg"
+                  className="glass-button h-9 rounded-lg flex items-center justify-center bg-white/5"
                 >
                   <RefreshCw className="h-5 w-5" />
                 </button>
               )}
             </div>
-          </div>
-          
-          {(searchQuery || selectedCategory) && (
-            <div className="mt-4 text-sm text-white/80">
-              {filteredDrugs.length === 0 ? (
-                t('drugList.noResults')
-              ) : (
-                t('drugList.resultsFound', {
-                  count: filteredDrugs.length,
-                  medication: filteredDrugs.length === 1 ? t('drugList.medication') : t('drugList.medications')
-                })
-              )}
+
+            {/* Desktop Search and Filter */}
+            <div className="hidden md:flex md:flex-row md:items-center md:space-x-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
+                <input
+                  type="text"
+                  placeholder={t('calendar.searchPlaceholder')}
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="glass-input w-full pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white placeholder-white/50 bg-white/5"
+                />
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
+                  <select
+                    value={selectedCategory || ''}
+                    onChange={(e) => setSelectedCategory(e.target.value || null)}
+                    className="glass-input pl-10 pr-8 py-2 rounded-lg appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white bg-white/5"
+                  >
+                    <option value="">{t('calendar.allCategories')}</option>
+                    {drugCategories.map(category => (
+                      <option key={category.value} value={category.value}>
+                        {category.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {(searchQuery || selectedCategory) && (
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedCategory(null);
+                    }}
+                    className="glass-button p-2 rounded-lg bg-white/5"
+                  >
+                    <RefreshCw className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
             </div>
-          )}
+
+            {/* Search Results Count */}
+            {(searchQuery || selectedCategory) && (
+              <div className="text-sm text-white/60 mt-1">
+                {filteredDrugs.length === 0 ? (
+                  t('drugList.noResults')
+                ) : (
+                  t('drugList.resultsFound', {
+                    count: filteredDrugs.length,
+                    medication: filteredDrugs.length === 1 ? t('drugList.medication') : t('drugList.medications')
+                  })
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="hidden md:block">
@@ -249,9 +298,9 @@ export default function CalendarTool() {
         </div>
 
         <div className="md:hidden">
-          {/* Category Icons Grid */}
-          <div className="glass-card p-4 mb-4">
-            <div className="grid grid-cols-3 gap-3">
+          {/* Category Icons Grid - Mobile */}
+          <div className="glass-card p-3 mb-4">
+            <div className="grid grid-cols-3 gap-2">
               {drugCategories.map(category => {
                 const colors = drugColors[category.value as keyof typeof drugColors];
                 const isSelected = selectedCategory === category.value;
@@ -263,21 +312,21 @@ export default function CalendarTool() {
                   <button
                     key={category.value}
                     onClick={() => setSelectedCategory(isSelected ? null : category.value)}
-                    className={`p-3 rounded-lg transition-all flex flex-col items-center ${
+                    className={`p-2 rounded-lg transition-all flex flex-col items-center ${
                       isSelected 
                         ? `${colors.bg} ${colors.text} shadow-lg` 
                         : 'bg-white/10 hover:bg-white/20'
                     }`}
                   >
-                    <div className={`w-12 h-12 mb-3 rounded-lg flex items-center justify-center ${
+                    <div className={`w-10 h-10 mb-2 rounded-lg flex items-center justify-center ${
                       isSelected ? 'bg-white/20' : colors.bg
                     }`}>
-                      <DrugSymbol symbol={symbol} className={`text-xl ${isSelected ? 'text-white' : ''}`} />
+                      <DrugSymbol symbol={symbol} className={`text-lg ${isSelected ? 'text-white' : ''}`} />
                     </div>
-                    <div className={`text-sm font-medium text-center leading-tight min-h-[2.5em] flex items-center px-1 ${
+                    <div className={`text-xs font-medium text-center leading-tight h-8 flex items-center justify-center px-1 ${
                       isSelected ? 'text-white' : 'text-white/90'
                     }`}>
-                      {category.label.split('(')[0].trim()}
+                      {category.label.split(' ')[0]}
                     </div>
                   </button>
                 );

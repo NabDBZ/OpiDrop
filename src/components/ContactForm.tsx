@@ -88,10 +88,10 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6" noValidate>
       {/* Name Field */}
       <div>
-        <label htmlFor="name" className="block text-lg font-medium text-white mb-2">
+        <label htmlFor="name" className="block text-base sm:text-lg font-medium text-white mb-1.5 sm:mb-2">
           {t('contact.form.name')}
         </label>
         <input
@@ -100,14 +100,14 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className={`glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border ${
+          className={`glass-input w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-base sm:text-lg bg-white/10 border ${
             errors.name ? 'border-red-400' : 'border-white/20 focus:border-blue-400'
           } placeholder-white/40`}
           placeholder={t('contact.form.namePlaceholder')}
         />
         {errors.name && (
-          <div className="mt-2 flex items-center text-base text-red-400">
-            <AlertCircle className="w-5 h-5 mr-2" />
+          <div className="mt-1.5 flex items-center text-sm sm:text-base text-red-400">
+            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
             {errors.name}
           </div>
         )}
@@ -115,7 +115,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
 
       {/* Email Field */}
       <div>
-        <label htmlFor="email" className="block text-lg font-medium text-white mb-2">
+        <label htmlFor="email" className="block text-base sm:text-lg font-medium text-white mb-1.5 sm:mb-2">
           {t('contact.form.email')}
         </label>
         <input
@@ -124,14 +124,14 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          className={`glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border ${
+          className={`glass-input w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-base sm:text-lg bg-white/10 border ${
             errors.email ? 'border-red-400' : 'border-white/20 focus:border-blue-400'
           } placeholder-white/40`}
           placeholder={t('contact.form.emailPlaceholder')}
         />
         {errors.email && (
-          <div className="mt-2 flex items-center text-base text-red-400">
-            <AlertCircle className="w-5 h-5 mr-2" />
+          <div className="mt-1.5 flex items-center text-sm sm:text-base text-red-400">
+            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
             {errors.email}
           </div>
         )}
@@ -139,7 +139,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
 
       {/* Subject Field */}
       <div>
-        <label htmlFor="subject" className="block text-lg font-medium text-white mb-2">
+        <label htmlFor="subject" className="block text-base sm:text-lg font-medium text-white mb-1.5 sm:mb-2">
           {t('contact.form.subject')}
         </label>
         <select
@@ -147,7 +147,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           name="subject"
           value={formData.subject}
           onChange={handleChange}
-          className="glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border border-white/20 focus:border-blue-400 text-white"
+          className="glass-input w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-base sm:text-lg bg-white/10 border border-white/20 focus:border-blue-400 text-white"
         >
           <option value="General Inquiry" className="bg-gray-900 text-white">{t('contact.form.subjects.general')}</option>
           <option value="Bug Report" className="bg-gray-900 text-white">{t('contact.form.subjects.bug')}</option>
@@ -158,7 +158,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
 
       {/* Message Field */}
       <div>
-        <label htmlFor="message" className="block text-lg font-medium text-white mb-2">
+        <label htmlFor="message" className="block text-base sm:text-lg font-medium text-white mb-1.5 sm:mb-2">
           {t('contact.form.message')}
         </label>
         <textarea
@@ -167,38 +167,38 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           value={formData.message}
           onChange={handleChange}
           rows={5}
-          className={`glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border resize-none ${
+          className={`glass-input w-full px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-base sm:text-lg bg-white/10 border resize-none ${
             errors.message ? 'border-red-400' : 'border-white/20 focus:border-blue-400'
           } placeholder-white/40`}
           placeholder={t('contact.form.messagePlaceholder')}
         />
         {errors.message && (
-          <div className="mt-2 flex items-center text-base text-red-400">
-            <AlertCircle className="w-5 h-5 mr-2" />
+          <div className="mt-1.5 flex items-center text-sm sm:text-base text-red-400">
+            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
             {errors.message}
           </div>
         )}
       </div>
 
       {/* Submit Button */}
-      <div className="flex justify-center">
+      <div className="flex justify-center pt-2 sm:pt-4">
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`glass-button px-8 py-3 rounded-lg inline-flex items-center justify-center text-lg font-medium bg-blue-600/30 hover:bg-blue-500/40 transition-colors ${
+          className={`glass-button px-6 sm:px-8 py-2 sm:py-3 rounded-lg inline-flex items-center justify-center text-base sm:text-lg font-medium bg-blue-600/30 hover:bg-blue-500/40 transition-colors ${
             isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           {isSubmitting ? (
             <>
-              <span className="animate-spin mr-2">
-                <Send className="w-5 h-5" />
+              <span className="animate-spin mr-1.5 sm:mr-2">
+                <Send className="w-4 h-4 sm:w-5 sm:h-5" />
               </span>
               <span>{t('contact.form.sending')}</span>
             </>
           ) : (
             <>
-              <Send className="w-5 h-5 mr-2" />
+              <Send className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2" />
               <span>{t('contact.form.send')}</span>
             </>
           )}
