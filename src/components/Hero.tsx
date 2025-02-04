@@ -14,14 +14,14 @@ export function Hero() {
             <div className="mx-auto max-w-7xl">
               <div className="lg:grid lg:grid-cols-12 lg:gap-8">
                 <div className="px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:items-center">
-                  <div className="backdrop-blur-sm bg-white/10 rounded-2xl p-6 shadow-lg border border-white/10">
-                    <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-gray-900 sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
-                      <span className="block text-gray-900">Simplify Your</span>
-                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 pb-3">
+                  <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6 shadow-lg border border-white/20">
+                    <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
+                      <span className="block">Simplify Your</span>
+                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400 pb-3">
                         Eye Drop Schedule
                       </span>
                     </h1>
-                    <p className="mt-3 text-base text-gray-900 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+                    <p className="mt-3 text-base text-white/80 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                       Create personalized eye drop schedules, track treatments, and improve patient compliance with our intuitive calendar tool.
                     </p>
                     <div className="mt-8 sm:mt-12">
