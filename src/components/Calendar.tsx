@@ -1,8 +1,11 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { format, addDays, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, startOfDay, isBefore, isAfter, parse, set } from 'date-fns';
-import { Info, ChevronLeft, ChevronRight, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Info, ChevronLeft, ChevronRight, Clock, CheckCircle2, AlertCircle, Download } from 'lucide-react';
 import { DrugType, drugColors } from '../data/drugTypes';
 import { DrugSymbol } from './DrugSymbol';
+import { generatePDF } from '../utils/pdfExport';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-hot-toast';
 
 type CalendarProps = {
   selectedDrugs: (DrugType & {
@@ -54,6 +57,9 @@ const POSOLOGY_TIME_SLOTS = {
 };
 
 export function Calendar({ selectedDrugs, startDate, onStartDateChange }: CalendarProps) {
+  const { t } = useTranslation();
+  const calendarRef = useRef<HTMLDivElement>(null);
+  const [isExporting, setIsExporting] = useState(false);
   const [selectionStart, setSelectionStart] = useState<Date | null>(null);
   const [completedDoses, setCompletedDoses] = useState<DoseStatus[]>([]);
   const [hoveredCell, setHoveredCell] = useState<{ drugId: string; date: string; timeIndex: number } | null>(null);
@@ -151,14 +157,44 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
     onStartDateChange(newDate);
   }, [startDate, onStartDateChange]);
 
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    const toastId = toast.loading(t('export.downloading'));
+    
+    try {
+      const calendarData = {
+        selectedDrugs: selectedDrugs.map((drug, index) => ({
+          ...drug,
+          sequenceNumber: index + 1
+        })),
+        startDate: selectionStart || startDate,
+        timeSlots: [
+          { hour: 8, minute: 0, label: '8:00' },
+          { hour: 12, minute: 0, label: '12:00' },
+          { hour: 14, minute: 0, label: '14:00' },
+          { hour: 16, minute: 0, label: '16:00' },
+          { hour: 20, minute: 0, label: '20:00' }
+        ]
+      };
+
+      await generatePDF(calendarData, `calendar-${format(selectionStart || startDate, 'yyyy-MM-dd')}.pdf`);
+      toast.success(t('export.success'), { id: toastId });
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      toast.error(t('export.error'), { id: toastId });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
-    <div className="glass-card border-0">
-      {/* Enhanced Calendar Header */}
+    <div className="glass-card border-0" ref={calendarRef} data-calendar-container>
+      {/* Calendar Header */}
       <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-8 border-b border-gray-200">
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => navigateWeek('prev')}
-            className="p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group"
+            className="p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group print:hidden"
           >
             <ChevronLeft className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </button>
@@ -167,35 +203,49 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
               {format(weekStart, 'MMMM d')} - {format(weekEnd, 'MMMM d, yyyy')}
             </h2>
             <p className="text-sm text-gray-600">
-              Treatment Start: {selectionStart ? format(selectionStart, 'MMMM d, yyyy') : 'Not set'}
+              {t('calendar.treatmentStart')}: {selectionStart ? format(selectionStart, 'MMMM d, yyyy') : t('calendar.notSet')}
             </p>
           </div>
-          <button
-            onClick={() => navigateWeek('next')}
-            className="p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group"
-          >
-            <ChevronRight className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-          </button>
+          <div className="flex items-center space-x-4 print:hidden">
+            <button
+              onClick={handleExportPDF}
+              disabled={isExporting}
+              className={`p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group ${
+                isExporting ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
+              title={t('calendar.export.button')}
+            >
+              <Download className={`h-5 w-5 text-gray-600 group-hover:text-gray-900 ${
+                isExporting ? 'animate-bounce' : ''
+              }`} />
+            </button>
+            <button
+              onClick={() => navigateWeek('next')}
+              className="p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group"
+            >
+              <ChevronRight className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Enhanced Calendar Grid */}
-      <div className="overflow-x-auto">
+      {/* Calendar Grid */}
+      <div className="overflow-x-auto print:overflow-visible">
         <div className="inline-block min-w-full align-middle">
-          <div className="grid grid-cols-[auto_repeat(7,_minmax(160px,_1fr))]">
-            {/* Enhanced Time Column Header */}
+          <div className="grid grid-cols-[auto_repeat(7,_minmax(160px,_1fr))] print:grid-cols-[auto_repeat(7,_1fr)]">
+            {/* Time Column Header */}
             <div className="bg-gray-50 p-6 border-b border-gray-200">
-              <span className="text-sm font-semibold text-gray-700">Time</span>
+              <span className="text-sm font-semibold text-gray-700">{t('calendar.time')}</span>
             </div>
 
-            {/* Enhanced Day Headers */}
+            {/* Day Headers */}
             {days.map((day, dayIndex) => (
               <div
                 key={dayIndex}
                 className={`p-6 text-center border-b border-gray-200 transition-colors duration-200
                   ${isSameDay(day, new Date()) 
                     ? 'bg-blue-50 border-blue-100' 
-                    : 'bg-gray-50 hover:bg-gray-100'}`}
+                    : 'bg-gray-50 hover:bg-gray-100'} print:bg-white print:hover:bg-white`}
               >
                 <div className="flex flex-col items-center">
                   <span className="text-sm font-bold text-gray-900">
@@ -208,10 +258,10 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
               </div>
             ))}
 
-            {/* Enhanced Time Slots and Drug Grid */}
+            {/* Time Slots and Drug Grid */}
             {timeSlots.map((timeSlot, timeIndex) => (
               <React.Fragment key={timeIndex}>
-                {/* Enhanced Time Column */}
+                {/* Time Column */}
                 <div className="bg-gray-50/50 p-6 border-b border-gray-100">
                   <div className="flex items-center space-x-3">
                     <Clock className="h-5 w-5 text-gray-400" />
@@ -221,7 +271,7 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
                   </div>
                 </div>
 
-                {/* Enhanced Drug Cells */}
+                {/* Drug Cells */}
                 {days.map((day, dayIndex) => {
                   const dateStr = format(day, 'yyyy-MM-dd');
                   const drugsAtTime = drugsByTime[timeIndex];
@@ -314,10 +364,10 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
         </div>
       </div>
 
-      {/* Enhanced Progress Section */}
-      <div className="border-t border-gray-200 p-8 bg-gradient-to-b from-gray-50 to-white">
-        <h3 className="text-xl font-bold text-gray-900 mb-6">Treatment Progress</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Progress Section */}
+      <div className="border-t border-gray-200 p-8 bg-gradient-to-b from-gray-50 to-white print:bg-white">
+        <h3 className="text-xl font-bold text-gray-900 mb-6">{t('calendar.progress.title')}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 print:grid-cols-4">
           {selectedDrugs.map((drug) => {
             const drugTimeSlots = drug.customSchedule
               ? drug.customSchedule.frequency

@@ -195,6 +195,12 @@
     "title": "Calendrier des Gouttes Oculaires",
     "allCategories": "Toutes les Catégories",
     "searchPlaceholder": "Rechercher par médicament ou marque...",
+    "export": {
+      "button": "Exporter en PDF",
+      "downloading": "Téléchargement...",
+      "success": "Calendrier exporté avec succès",
+      "error": "Erreur lors de l'exportation"
+    },
     "schedules": {
       "once": "Une fois par jour (DIE)",
       "twice": "Deux fois par jour (BID)",

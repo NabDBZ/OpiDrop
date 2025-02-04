@@ -5,6 +5,7 @@ import { Footer } from './components/Footer';
 import { ParallaxBackground } from './components/ParallaxBackground';
 import { ErrorBoundary } from './utils/errorBoundary';
 import { DebugMonitor } from './utils/debugMonitor';
+import { Toaster } from 'react-hot-toast';
 
 // Lazy load pages
 const HomePage = lazy(() => import('./pages/HomePage').then(module => ({ default: module.HomePage })));
@@ -54,6 +55,19 @@ function AppContent() {
       </main>
       <Footer />
       {process.env.NODE_ENV === 'development' && <DebugMonitor />}
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: 'glass-card',
+          duration: 3000,
+          style: {
+            background: 'rgba(255, 255, 255, 0.1)',
+            color: '#fff',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+          },
+        }}
+      />
     </div>
   );
 }
