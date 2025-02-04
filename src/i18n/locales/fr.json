@@ -1,0 +1,137 @@
+{
+  "common": {
+    "eyeDrops": "Gouttes pour les yeux",
+    "calendar": "Calendrier",
+    "back": "Retour à l'accueil",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "search": "Rechercher",
+    "language": "Langue",
+    "signIn": "Connexion"
+  },
+  "calendar": {
+    "title": "Calendrier des Gouttes Oculaires",
+    "allCategories": "Toutes les Catégories",
+    "searchPlaceholder": "Rechercher par médicament ou marque..."
+  },
+  "header": {
+    "title": "OptiDrop",
+    "eyeDropTool": "Outil",
+    "userGuide": "Guide",
+    "articles": "Articles",
+    "contact": "Contact",
+    "signIn": "Connexion"
+  },
+  "guide": {
+    "title": "Comment utiliser les gouttes oculaires",
+    "description": "Un guide complet pour bien administrer vos gouttes oculaires",
+    "preparation": {
+      "title": "Préparation",
+      "hands": {
+        "title": "Lavez-vous les mains",
+        "description": "Lavez-vous soigneusement les mains avec du savon et de l'eau",
+        "tip": "Utilisez du savon antibactérien si disponible"
+      },
+      "bottle": {
+        "title": "Vérifiez le flacon",
+        "description": "Assurez-vous que l'embout du compte-gouttes est propre et que la solution est claire"
+      },
+      "contacts": {
+        "title": "Retirez vos lentilles",
+        "description": "Enlevez vos lentilles de contact avant d'appliquer les gouttes"
+      }
+    },
+    "positioning": {
+      "title": "Positionnement",
+      "comfort": {
+        "title": "Installez-vous confortablement",
+        "description": "Asseyez-vous ou allongez-vous dans une position confortable"
+      },
+      "pocket": {
+        "title": "Créez une poche",
+        "description": "Tirez votre paupière inférieure vers le bas pour former une poche"
+      },
+      "hands": {
+        "title": "Mains propres",
+        "description": "Gardez vos mains propres et stables"
+      }
+    },
+    "application": {
+      "title": "Application",
+      "drops": {
+        "title": "Appliquez les gouttes",
+        "description": "Tenez le flacon au-dessus de l'œil et pressez doucement"
+      },
+      "close": {
+        "title": "Fermez les yeux",
+        "description": "Fermez doucement les yeux pendant 2-3 minutes",
+        "tip": "Évitez de cligner excessivement des yeux"
+      },
+      "tearduct": {
+        "title": "Pressez le canal lacrymal",
+        "description": "Appliquez une légère pression sur le canal lacrymal"
+      }
+    },
+    "waiting": {
+      "title": "Période d'attente",
+      "multiple": {
+        "title": "Médicaments multiples",
+        "description": "Attendez 10 minutes entre différentes gouttes"
+      }
+    },
+    "aftercare": {
+      "title": "Soins post-application",
+      "cleanup": {
+        "title": "Nettoyage",
+        "description": "Essuyez l'excès de gouttes"
+      },
+      "storage": {
+        "title": "Conservation",
+        "description": "Conservez les gouttes dans un endroit frais et sec"
+      },
+      "contacts": {
+        "title": "Lentilles de contact",
+        "description": "Attendez 15 minutes avant de remettre vos lentilles"
+      }
+    },
+    "additionalTips": {
+      "title": "Conseils supplémentaires",
+      "anxiety": {
+        "title": "Gestion de l'anxiété",
+        "description": "Respirez profondément et restez détendu pendant l'application"
+      },
+      "contamination": {
+        "title": "Évitez la contamination",
+        "description": "Ne touchez pas l'embout du compte-gouttes avec l'œil ou toute surface"
+      },
+      "missedDose": {
+        "title": "Doses oubliées",
+        "description": "Si vous oubliez une dose, prenez-la dès que vous vous en souvenez, sauf s'il est presque l'heure de la prochaine dose"
+      }
+    }
+  },
+  "categories": {
+    "antibiotics": "Antibiotiques",
+    "nsaids": "Anti-inflammatoires (AINS)",
+    "corticosteroids": "Corticostéroïdes",
+    "antihistamines": "Antihistaminiques",
+    "mastocyte": "Stabilisateurs mastocytaires",
+    "parasympathomimetics": "Parasympathomimétiques",
+    "parasympatholytics": "Parasympatholytiques",
+    "sympatholytics": "Bêta-bloquants",
+    "alpha_agonists": "Agonistes alpha",
+    "carbonic_inhibitors": "Inhibiteurs de l'anhydrase carbonique",
+    "prostaglandins": "Prostaglandines"
+  },
+  "drugTypes": {
+    "solution": "Solution",
+    "suspension": "Suspension",
+    "ointment": "Pommade",
+    "gel": "Gel",
+    "emulsion": "Émulsion"
+  }
+}

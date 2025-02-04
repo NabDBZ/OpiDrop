@@ -1,0 +1,137 @@
+{
+  "common": {
+    "eyeDrops": "Eye Drops",
+    "calendar": "Calendar",
+    "back": "Back to Home",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "language": "Language",
+    "signIn": "Sign In"
+  },
+  "calendar": {
+    "title": "Eye Drop Schedule",
+    "allCategories": "All Categories",
+    "searchPlaceholder": "Search by medication or brand name..."
+  },
+  "header": {
+    "title": "OptiDrop",
+    "eyeDropTool": "Tool",
+    "userGuide": "Guide",
+    "articles": "Articles",
+    "contact": "Contact",
+    "signIn": "Sign In"
+  },
+  "guide": {
+    "title": "How to Use Eye Drops",
+    "description": "A comprehensive guide to properly administering your eye drops",
+    "preparation": {
+      "title": "Preparation",
+      "hands": {
+        "title": "Wash Your Hands",
+        "description": "Thoroughly wash your hands with soap and water",
+        "tip": "Use antibacterial soap if available"
+      },
+      "bottle": {
+        "title": "Check the Bottle",
+        "description": "Ensure the dropper tip is clean and the solution is clear"
+      },
+      "contacts": {
+        "title": "Remove Contact Lenses",
+        "description": "Take out contact lenses before applying drops"
+      }
+    },
+    "positioning": {
+      "title": "Positioning",
+      "comfort": {
+        "title": "Get Comfortable",
+        "description": "Sit or lie down in a comfortable position"
+      },
+      "pocket": {
+        "title": "Create Eye Pocket",
+        "description": "Pull down your lower eyelid to form a pocket"
+      },
+      "hands": {
+        "title": "Clean Hands",
+        "description": "Keep your hands clean and steady"
+      }
+    },
+    "application": {
+      "title": "Application",
+      "drops": {
+        "title": "Apply Drops",
+        "description": "Hold the bottle above your eye and squeeze gently"
+      },
+      "close": {
+        "title": "Close Eyes",
+        "description": "Close your eyes gently for 2-3 minutes",
+        "tip": "Avoid blinking excessively"
+      },
+      "tearduct": {
+        "title": "Press Tear Duct",
+        "description": "Apply gentle pressure to your tear duct"
+      }
+    },
+    "waiting": {
+      "title": "Waiting Period",
+      "multiple": {
+        "title": "Multiple Medications",
+        "description": "Wait 10 minutes between different eye drops"
+      }
+    },
+    "aftercare": {
+      "title": "Aftercare",
+      "cleanup": {
+        "title": "Clean Up",
+        "description": "Wipe away any excess drops"
+      },
+      "storage": {
+        "title": "Store Properly",
+        "description": "Keep drops in a cool, dry place"
+      },
+      "contacts": {
+        "title": "Contact Lenses",
+        "description": "Wait 15 minutes before reinserting contacts"
+      }
+    },
+    "additionalTips": {
+      "title": "Additional Tips",
+      "anxiety": {
+        "title": "Managing Anxiety",
+        "description": "Take deep breaths and stay relaxed during application"
+      },
+      "contamination": {
+        "title": "Avoid Contamination",
+        "description": "Don't touch the dropper tip to your eye or any surface"
+      },
+      "missedDose": {
+        "title": "Missed Doses",
+        "description": "If you miss a dose, take it as soon as you remember unless it's almost time for your next dose"
+      }
+    }
+  },
+  "categories": {
+    "antibiotics": "Antibiotics",
+    "nsaids": "Anti-inflammatory (NSAIDs)",
+    "corticosteroids": "Corticosteroids",
+    "antihistamines": "Antihistamines",
+    "mastocyte": "Mastocyte Stabilizers",
+    "parasympathomimetics": "Parasympathomimetics",
+    "parasympatholytics": "Parasympatholytics",
+    "sympatholytics": "Beta Blockers",
+    "alpha_agonists": "Alpha Agonists",
+    "carbonic_inhibitors": "Carbonic Inhibitors",
+    "prostaglandins": "Prostaglandins"
+  },
+  "drugTypes": {
+    "solution": "Solution",
+    "suspension": "Suspension",
+    "ointment": "Ointment",
+    "gel": "Gel",
+    "emulsion": "Emulsion"
+  }
+}
