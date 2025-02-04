@@ -1,34 +1,25 @@
 import React from 'react';
 import { Building2, Mail, Linkedin, Globe, GraduationCap, Briefcase, Award, Heart } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function Credits() {
+  const { t } = useTranslation();
+
   const credentials = [
     {
       icon: GraduationCap,
-      title: 'Education',
-      items: [
-        'Pharm.D. Candidate (2025)',
-        'MBA Candidate (2026)',
-        'Université Laval'
-      ]
+      title: t('credits.credentials.education.title'),
+      items: t('credits.credentials.education.items', { returnObjects: true }) as string[]
     },
     {
       icon: Briefcase,
-      title: 'Professional',
-      items: [
-        'Co-founder of MDose AI',
-        'Expert in pharmacy practice',
-        'AI-driven healthcare solutions'
-      ]
+      title: t('credits.credentials.professional.title'),
+      items: t('credits.credentials.professional.items', { returnObjects: true }) as string[]
     },
     {
       icon: Award,
-      title: 'Projects',
-      items: [
-        'Decipher.doctor - Rx translation',
-        'AnnoMD - Medical annotation',
-        'MediScri - Clinical data entry'
-      ]
+      title: t('credits.credentials.projects.title'),
+      items: t('credits.credentials.projects.items', { returnObjects: true }) as string[]
     }
   ];
 
@@ -46,7 +37,7 @@ export function Credits() {
         <div className="w-12 h-12 rounded-xl bg-blue-600/20 flex items-center justify-center">
           <Heart className="w-6 h-6 text-blue-400" />
         </div>
-        <h2 className="text-2xl font-bold text-white">Credits</h2>
+        <h2 className="text-2xl font-bold text-white">{t('credits.title')}</h2>
       </div>
 
       {/* Developer Info */}
@@ -67,10 +58,10 @@ export function Credits() {
             </div>
             <div>
               <h4 className="text-xl font-semibold text-white">Nabil Naas Araba</h4>
-              <p className="text-blue-300">Healthcare Technology Innovator</p>
+              <p className="text-blue-300">{t('credits.developer.role')}</p>
             </div>
           </div>
-          
+
           <div className="flex flex-wrap gap-3">
             <a
               href="https://www.linkedin.com/in/nabil-naas-araba"
@@ -96,7 +87,7 @@ export function Credits() {
 
       {/* Credentials */}
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-white mb-4">Credentials</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">{t('credits.credentials.title')}</h3>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {credentials.map((cred) => (
             <div key={cred.title} className="glass-card p-4 bg-white/5">
@@ -121,7 +112,7 @@ export function Credits() {
 
       {/* Technology Stack */}
       <div>
-        <h3 className="text-lg font-semibold text-white mb-4">Technology Stack</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">{t('credits.technology.title')}</h3>
         <div className="glass-card p-4 bg-white/5">
           <div className="flex flex-wrap gap-2">
             {technologies.map((tech) => (
@@ -139,7 +130,7 @@ export function Credits() {
       {/* Footer */}
       <div className="mt-8 pt-6 border-t border-white/10">
         <p className="text-center text-blue-200">
-          Made with ❤️ by the MDose AI team
+          {t('credits.technology.madeWith')}
         </p>
       </div>
     </div>

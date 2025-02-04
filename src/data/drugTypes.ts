@@ -66,19 +66,40 @@ export const effectPriority: Record<DrugEffect, number> = {
 };
 
 export const drugColors: Record<DrugEffect, { bg: string; text: string }> = {
-  artificial_tears: { bg: '#E3F2FD', text: '#1565C0' },
-  nsaids: { bg: '#C8E6C9', text: '#2E7D32' },
+  // Antibiotics - Light blue theme
+  antibiotics: { bg: '#E3F2FD', text: '#1565C0' },
+  
+  // NSAIDs - Green theme
+  nsaids: { bg: '#E8F5E9', text: '#2E7D32' },
+  
+  // Corticosteroids - Warm yellow theme
+  corticosteroids: { bg: '#FFF8E1', text: '#F57F17' },
+  
+  // Antihistamines - Orange theme
+  antihistamines: { bg: '#FFF3E0', text: '#E65100' },
+  
+  // Parasympathomimetics - Purple theme
   parasympathomimetics: { bg: '#F3E5F5', text: '#6A1B9A' },
-  parasympatholytics: { bg: '#004D40', text: '#E0F2F1' },
-  sympathomimetics: { bg: '#FFE0B2', text: '#E65100' },
-  sympatholytics: { bg: '#1A237E', text: '#E8EAF6' },
-  alpha_agonists: { bg: '#4A148C', text: '#F3E5F5' },
-  beta_blockers: { bg: '#C5CAE9', text: '#283593' },
-  carbonic_inhibitors: { bg: '#E0F2F1', text: '#00695C' },
-  prostaglandins: { bg: '#004D40', text: '#E0F2F1' }, // Deep teal palette for prostaglandins
-  antibiotics: { bg: '#BBDEFB', text: '#1565C0' },
-  mast_cell_stabilizers: { bg: '#FFE0B2', text: '#E65100' },
-  corticosteroids: { bg: '#FFF9C4', text: '#F57F17' },
-  antihistamines: { bg: '#FFE0B2', text: '#E65100' },
-  long_acting: { bg: '#FFCDD2', text: '#B71C1C' }
+  
+  // Parasympatholytics - Teal theme
+  parasympatholytics: { bg: '#E0F2F1', text: '#00695C' },
+  
+  // Sympatholytics (Beta Blockers) - Deep blue theme
+  sympatholytics: { bg: '#E8EAF6', text: '#283593' },
+  
+  // Alpha Agonists - Deep purple theme
+  alpha_agonists: { bg: '#EDE7F6', text: '#4527A0' },
+  
+  // Carbonic Inhibitors - Cyan theme
+  carbonic_inhibitors: { bg: '#E0F7FA', text: '#006064' },
+  
+  // Prostaglandins - Deep teal theme
+  prostaglandins: { bg: '#E0F2F1', text: '#004D40' },
+  
+  // Additional categories
+  artificial_tears: { bg: '#F1F8FF', text: '#0D47A1' },
+  sympathomimetics: { bg: '#FFF3E0', text: '#E65100' },
+  beta_blockers: { bg: '#E8EAF6', text: '#1A237E' },
+  mast_cell_stabilizers: { bg: '#FFF3E0', text: '#EF6C00' },
+  long_acting: { bg: '#FAFAFA', text: '#424242' }
 };

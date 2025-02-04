@@ -11,12 +11,215 @@
     "edit": "Edit",
     "search": "Search",
     "language": "Language",
-    "signIn": "Sign In"
+    "signIn": "Sign In",
+    "watchTutorial": "Watch Tutorial",
+    "getStarted": "Get Started",
+    "noAccount": "No account required to get started",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contact": "Contact",
+    "allRightsReserved": "All rights reserved"
+  },
+  "home": {
+    "hero": {
+      "title": {
+        "part1": "Simplify Your",
+        "part2": "Eye Drop Schedule"
+      },
+      "description": "Create personalized eye drop schedules, track treatments, and improve patient compliance with our intuitive calendar tool.",
+      "createSchedule": "Create Your Schedule",
+      "watchTutorial": "Watch Tutorial",
+      "noAccount": "No account required to get started",
+      "guidelines": {
+        "title": "Professional Guidelines",
+        "description": "Built following strict ophthalmic guidelines for medication administration."
+      }
+    },
+    "features": {
+      "title": "How OptiDrop Works",
+      "subtitle": "Create and manage your eye drop schedule in three simple steps",
+      "findMedications": {
+        "title": "Find Your Medications",
+        "description": "Search and filter through our comprehensive database of eye medications.",
+        "steps": {
+          "0": "Type medication name or brand",
+          "1": "Use filters to narrow by category",
+          "2": "View detailed drug information",
+          "3": "Select medications for your schedule"
+        }
+      },
+      "customizeSchedule": {
+        "title": "Customize Your Schedule",
+        "description": "Create a personalized treatment plan that fits your needs.",
+        "steps": {
+          "0": "Set frequency and duration",
+          "1": "Adjust timing preferences",
+          "2": "Automatic sequence optimization",
+          "3": "Smart conflict detection"
+        }
+      },
+      "trackProgress": {
+        "title": "Track Your Progress",
+        "description": "Monitor your treatment adherence and stay on schedule.",
+        "steps": {
+          "0": "Mark completed doses",
+          "1": "View progress statistics",
+          "2": "Get reminders and alerts",
+          "3": "Monitor treatment effectiveness"
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact & Credits",
+    "subtitle": "Contact us and discover the team behind OptiDrop",
+    "form": {
+      "title": "Contact Us",
+      "name": "Name",
+      "email": "Email address",
+      "message": "Message",
+      "send": "Send",
+      "success": "Thank you for your message! We'll get back to you soon.",
+      "error": "An error occurred while sending your message. Please try again."
+    },
+    "getInTouch": {
+      "title": "Get in Touch",
+      "description": "We're here to help with any questions about OptiDrop",
+      "email": "Send us an email",
+      "social": "Follow us on social media",
+      "support": "Technical support"
+    }
+  },
+  "credits": {
+    "title": "Credits",
+    "subtitle": "The team and technology behind OptiDrop",
+    "developer": {
+      "title": "Developer",
+      "name": "Maxime Daigle",
+      "role": "Healthcare Technology Innovator",
+      "description": "Passionate about healthcare innovation and developing technological solutions to improve patient care"
+    },
+    "credentials": {
+      "title": "Credentials",
+      "education": {
+        "title": "Education",
+        "items": [
+          "Pharm.D. Candidate (2025)",
+          "MBA Candidate (2026)",
+          "Université Laval"
+        ]
+      },
+      "professional": {
+        "title": "Professional",
+        "items": [
+          "Co-founder of MDose AI",
+          "Expert in pharmacy practice",
+          "AI-driven healthcare solutions"
+        ]
+      },
+      "projects": {
+        "title": "Projects",
+        "items": [
+          "Decipher.doctor - Rx translation",
+          "AnnoMD - Medical annotation",
+          "MediScri - Clinical data entry"
+        ]
+      }
+    },
+    "technology": {
+      "title": "Technology",
+      "stack": {
+        "title": "Tech Stack",
+        "frontend": "Frontend",
+        "backend": "Backend",
+        "database": "Database",
+        "hosting": "Hosting",
+        "tools": "Tools"
+      },
+      "madeWith": "Made with ❤️ by the MDose AI team",
+      "openSource": "Open source",
+      "license": "MIT License"
+    },
+    "acknowledgments": {
+      "title": "Acknowledgments",
+      "description": "Special thanks to everyone who contributed to this project",
+      "contributors": "Contributors",
+      "supporters": "Supporters"
+    }
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contact": "Contact",
+    "followUs": "Follow us",
+    "newsletter": {
+      "title": "Newsletter",
+      "description": "Stay informed about the latest updates",
+      "subscribe": "Subscribe",
+      "email": "Your email address",
+      "success": "Thank you for subscribing!",
+      "error": "An error occurred. Please try again."
+    }
+  },
+  "social": {
+    "github": "Follow us on GitHub",
+    "twitter": "Follow us on Twitter",
+    "linkedin": "Follow us on LinkedIn"
+  },
+  "articles": {
+    "title": "Under Construction",
+    "subtitle": "We're working hard to bring you valuable articles and resources. Check back soon for expert insights on eye care and medication management.",
+    "backHome": "Back to Home"
   },
   "calendar": {
     "title": "Eye Drop Schedule",
     "allCategories": "All Categories",
-    "searchPlaceholder": "Search by medication or brand name..."
+    "searchPlaceholder": "Search by medication or brand name...",
+    "schedules": {
+      "once": "Once Daily (DIE)",
+      "twice": "Twice Daily (BID)",
+      "three": "Three Times Daily (TID)",
+      "four": "Four Times Daily (QID)",
+      "custom": "Custom Schedule",
+      "week": "week",
+      "weeks": "weeks"
+    },
+    "selectedMedications": "Selected Medications",
+    "generateCalendar": "Generate Calendar",
+    "scheduleType": "Schedule Type",
+    "treatmentDuration": "Treatment Duration",
+    "customSchedule": {
+      "dailyFrequency": "Daily Frequency",
+      "hoursBetweenDoses": "Hours Between Doses",
+      "firstDoseTime": "First Dose Time"
+    },
+    "sequence": {
+      "title": "Administration Sequence",
+      "guidelines": {
+        "title": "Important Administration Guidelines",
+        "followSequence": "Follow the sequence numbers for proper administration order",
+        "waitBetween": "Wait 10 minutes between different eye drops",
+        "consistentTimes": "Apply drops at consistent times each day"
+      },
+      "administrationOrder": "Administration Order",
+      "drop": "Drop",
+      "multipleDrops": {
+        "title": "Multiple Drops at Same Time Slot",
+        "description": "The following drops are scheduled for the same time slot. To ensure proper absorption and effectiveness:",
+        "instructions": {
+          "title": "Administration Instructions:",
+          "followNumbers": "Follow the sequence numbers (lower numbers first)",
+          "waitTenMinutes": "Wait 10 minutes between each drop",
+          "blotExcess": "Gently blot excess with tissue after each drop"
+        }
+      }
+    },
+    "progress": {
+      "completed": "Completed Doses",
+      "remaining": "Remaining Doses",
+      "total": "Total Doses"
+    }
   },
   "header": {
     "title": "OptiDrop",
@@ -116,16 +319,20 @@
   },
   "categories": {
     "antibiotics": "Antibiotics",
-    "nsaids": "Anti-inflammatory (NSAIDs)",
+    "nsaids": "NSAIDs",
     "corticosteroids": "Corticosteroids",
     "antihistamines": "Antihistamines",
-    "mastocyte": "Mastocyte Stabilizers",
+    "mastocyte": "Mast Cell Stabilizers",
     "parasympathomimetics": "Parasympathomimetics",
     "parasympatholytics": "Parasympatholytics",
-    "sympatholytics": "Beta Blockers",
+    "sympatholytics": "Sympatholytics",
     "alpha_agonists": "Alpha Agonists",
-    "carbonic_inhibitors": "Carbonic Inhibitors",
-    "prostaglandins": "Prostaglandins"
+    "carbonic_inhibitors": "Carbonic Anhydrase Inhibitors",
+    "prostaglandins": "Prostaglandins",
+    "sympathomimetics": "Sympathomimetics",
+    "beta_blockers": "Beta Blockers",
+    "mast_cell_stabilizers": "Mast Cell Stabilizers",
+    "artificial_tears": "Artificial Tears"
   },
   "drugTypes": {
     "solution": "Solution",
@@ -133,5 +340,42 @@
     "ointment": "Ointment",
     "gel": "Gel",
     "emulsion": "Emulsion"
+  },
+  "drugList": {
+    "title": "Medication Categories",
+    "showCategories": "Show Categories",
+    "showAllDrugs": "Show All Medications",
+    "categoryDescriptions": {
+      "antibiotics": "Antibacterial medications",
+      "nsaids": "Non-steroidal anti-inflammatory drugs",
+      "corticosteroids": "Steroidal anti-inflammatory drugs",
+      "antihistamines": "Allergy medications",
+      "mastocyte": "Mast cell stabilizers",
+      "parasympathomimetics": "Cholinergic medications",
+      "parasympatholytics": "Pupil dilation drops",
+      "sympatholytics": "Pressure-reducing medications",
+      "alpha_agonists": "IOP-reducing drops",
+      "carbonic_inhibitors": "Aqueous humor suppressants",
+      "prostaglandins": "Outflow enhancers",
+      "sympathomimetics": "Sympathetic stimulants",
+      "beta_blockers": "Beta-adrenergic blockers",
+      "mast_cell_stabilizers": "Mast cell stabilizers",
+      "artificial_tears": "Artificial tears"
+    },
+    "searchPlaceholder": "Search for a medication...",
+    "noResults": "No medications found",
+    "selectMedication": "Select medication",
+    "selectedMedications": "Selected medications",
+    "concentration": "Concentration",
+    "brandName": "Brand name",
+    "type": "Type",
+    "effect": "Effect",
+    "description": "Description",
+    "standardPosology": "Standard posology",
+    "addToSchedule": "Add to schedule",
+    "removeFromSchedule": "Remove from schedule",
+    "categoryLegend": "Category legend",
+    "filterByCategory": "Filter by category",
+    "allCategories": "All categories"
   }
 }

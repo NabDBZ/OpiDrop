@@ -11,12 +11,234 @@
     "edit": "Modifier",
     "search": "Rechercher",
     "language": "Langue",
-    "signIn": "Connexion"
+    "signIn": "Connexion",
+    "watchTutorial": "Regarder le tutoriel",
+    "getStarted": "Commencer",
+    "noAccount": "Pas de compte requis pour commencer",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation",
+    "contact": "Contact",
+    "allRightsReserved": "Tous droits réservés"
+  },
+  "home": {
+    "hero": {
+      "title": {
+        "part1": "Simplifiez Votre",
+        "part2": "Calendrier de Gouttes"
+      },
+      "description": "Créez des calendriers personnalisés de gouttes oculaires, suivez vos traitements et améliorez l'observance des patients avec notre outil de calendrier intuitif.",
+      "createSchedule": "Créer Votre Calendrier",
+      "watchTutorial": "Regarder le Tutoriel",
+      "noAccount": "Pas de compte requis pour commencer",
+      "guidelines": {
+        "title": "Directives Professionnelles",
+        "description": "Conçu selon des directives ophtalmologiques strictes pour l'administration des médicaments."
+      }
+    },
+    "features": {
+      "title": "Comment OptiDrop Fonctionne",
+      "subtitle": "Créez et gérez votre calendrier de gouttes en trois étapes simples",
+      "findMedications": {
+        "title": "Trouvez Vos Médicaments",
+        "description": "Recherchez et filtrez dans notre base de données complète de médicaments oculaires.",
+        "steps": {
+          "0": "Tapez le nom du médicament ou la marque",
+          "1": "Utilisez les filtres par catégorie",
+          "2": "Consultez les informations détaillées",
+          "3": "Sélectionnez les médicaments pour votre calendrier"
+        }
+      },
+      "customizeSchedule": {
+        "title": "Personnalisez Votre Calendrier",
+        "description": "Créez un plan de traitement personnalisé qui correspond à vos besoins.",
+        "steps": {
+          "0": "Définissez la fréquence et la durée",
+          "1": "Ajustez les préférences horaires",
+          "2": "Optimisation automatique des séquences",
+          "3": "Détection intelligente des conflits"
+        }
+      },
+      "trackProgress": {
+        "title": "Suivez Votre Progression",
+        "description": "Surveillez votre adhésion au traitement et restez dans les temps.",
+        "steps": {
+          "0": "Marquez les doses prises",
+          "1": "Consultez les statistiques de progression",
+          "2": "Recevez des rappels et alertes",
+          "3": "Surveillez l'efficacité du traitement"
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact et Crédits",
+    "subtitle": "Prenez contact avec nous et découvrez l'équipe derrière OptiDrop",
+    "form": {
+      "title": "Contactez-nous",
+      "name": "Nom",
+      "email": "Adresse e-mail",
+      "message": "Message",
+      "subject": "Sujet",
+      "send": "Envoyer",
+      "sending": "Envoi en cours...",
+      "success": "Merci pour votre message ! Nous vous répondrons bientôt.",
+      "error": "Une erreur s'est produite lors de l'envoi de votre message. Veuillez réessayer.",
+      "namePlaceholder": "Entrez votre nom complet",
+      "emailPlaceholder": "Entrez votre adresse e-mail",
+      "messagePlaceholder": "Entrez votre message (minimum 20 caractères)",
+      "subjects": {
+        "general": "Demande générale",
+        "bug": "Signalement de bug",
+        "feature": "Suggestion de fonctionnalité",
+        "business": "Demande professionnelle"
+      },
+      "errors": {
+        "nameRequired": "Le nom est requis",
+        "emailRequired": "L'adresse e-mail est requise",
+        "emailInvalid": "Veuillez entrer une adresse e-mail valide",
+        "subjectRequired": "Veuillez sélectionner un sujet",
+        "messageRequired": "Le message est requis",
+        "messageLength": "Le message doit contenir au moins 20 caractères"
+      }
+    },
+    "getInTouch": {
+      "title": "Prenez Contact",
+      "description": "Nous sommes là pour vous aider avec vos questions sur OptiDrop",
+      "email": "Envoyez-nous un e-mail",
+      "social": "Suivez-nous sur les réseaux sociaux",
+      "support": "Support technique"
+    }
+  },
+  "credits": {
+    "title": "Crédits",
+    "subtitle": "L'équipe et la technologie derrière OptiDrop",
+    "developer": {
+      "title": "Développeur",
+      "name": "Maxime Daigle",
+      "role": "Innovateur en Technologie de la Santé",
+      "description": "Passionné par l'innovation en santé et le développement de solutions technologiques pour améliorer les soins aux patients"
+    },
+    "credentials": {
+      "title": "Qualifications",
+      "education": {
+        "title": "Formation",
+        "items": [
+          "Candidat Pharm.D. (2025)",
+          "Candidat MBA (2026)",
+          "Université Laval"
+        ]
+      },
+      "professional": {
+        "title": "Professionnel",
+        "items": [
+          "Co-fondateur de MDose AI",
+          "Expert en pratique pharmaceutique",
+          "Solutions de santé basées sur l'IA"
+        ]
+      },
+      "projects": {
+        "title": "Projets",
+        "items": [
+          "Decipher.doctor - Traduction d'ordonnances",
+          "AnnoMD - Annotation médicale",
+          "MediScri - Saisie de données cliniques"
+        ]
+      }
+    },
+    "technology": {
+      "title": "Technologies Utilisées",
+      "stack": {
+        "title": "Stack Technique",
+        "frontend": "Interface Utilisateur",
+        "backend": "Serveur",
+        "database": "Base de Données",
+        "hosting": "Hébergement",
+        "tools": "Outils"
+      },
+      "madeWith": "Fait avec ❤️ par l'équipe MDose AI",
+      "openSource": "Code source ouvert",
+      "license": "Licence MIT"
+    },
+    "acknowledgments": {
+      "title": "Remerciements",
+      "description": "Un grand merci à tous ceux qui ont contribué à ce projet",
+      "contributors": "Contributeurs",
+      "supporters": "Soutiens"
+    }
+  },
+  "footer": {
+    "rights": "Tous droits réservés",
+    "privacyPolicy": "Politique de confidentialité",
+    "termsOfService": "Conditions d'utilisation",
+    "contact": "Contact",
+    "followUs": "Suivez-nous",
+    "newsletter": {
+      "title": "Infolettre",
+      "description": "Restez informé des dernières mises à jour",
+      "subscribe": "S'abonner",
+      "email": "Votre adresse e-mail",
+      "success": "Merci de votre inscription !",
+      "error": "Une erreur est survenue. Veuillez réessayer."
+    }
+  },
+  "social": {
+    "github": "Suivez-nous sur GitHub",
+    "twitter": "Suivez-nous sur Twitter",
+    "linkedin": "Suivez-nous sur LinkedIn"
+  },
+  "articles": {
+    "title": "En Construction",
+    "subtitle": "Nous travaillons dur pour vous apporter des articles et ressources utiles. Revenez bientôt pour des conseils d'experts sur les soins oculaires et la gestion des médicaments.",
+    "backHome": "Retour à l'accueil"
   },
   "calendar": {
     "title": "Calendrier des Gouttes Oculaires",
     "allCategories": "Toutes les Catégories",
-    "searchPlaceholder": "Rechercher par médicament ou marque..."
+    "searchPlaceholder": "Rechercher par médicament ou marque...",
+    "schedules": {
+      "once": "Une fois par jour (DIE)",
+      "twice": "Deux fois par jour (BID)",
+      "three": "Trois fois par jour (TID)",
+      "four": "Quatre fois par jour (QID)",
+      "custom": "Horaire personnalisé",
+      "week": "semaine",
+      "weeks": "semaines"
+    },
+    "selectedMedications": "Médicaments Sélectionnés",
+    "generateCalendar": "Générer le Calendrier",
+    "scheduleType": "Type d'horaire",
+    "treatmentDuration": "Durée du traitement",
+    "customSchedule": {
+      "dailyFrequency": "Fréquence quotidienne",
+      "hoursBetweenDoses": "Heures entre les doses",
+      "firstDoseTime": "Heure de la première dose"
+    },
+    "sequence": {
+      "title": "Séquence d'Administration",
+      "guidelines": {
+        "title": "Directives Importantes d'Administration",
+        "followSequence": "Suivez les numéros de séquence pour l'ordre d'administration",
+        "waitBetween": "Attendez 10 minutes entre les différentes gouttes",
+        "consistentTimes": "Appliquez les gouttes à des heures régulières chaque jour"
+      },
+      "administrationOrder": "Ordre d'Administration",
+      "drop": "Goutte",
+      "multipleDrops": {
+        "title": "Plusieurs Gouttes au Même Moment",
+        "description": "Les gouttes suivantes sont prévues pour le même créneau horaire. Pour assurer une absorption et une efficacité optimales :",
+        "instructions": {
+          "title": "Instructions d'Administration :",
+          "followNumbers": "Suivez les numéros de séquence (les plus petits d'abord)",
+          "waitTenMinutes": "Attendez 10 minutes entre chaque goutte",
+          "blotExcess": "Épongez doucement l'excès avec un mouchoir après chaque goutte"
+        }
+      }
+    },
+    "progress": {
+      "completed": "Doses Complétées",
+      "remaining": "Doses Restantes",
+      "total": "Total des Doses"
+    }
   },
   "header": {
     "title": "OptiDrop",
@@ -125,7 +347,11 @@
     "sympatholytics": "Bêta-bloquants",
     "alpha_agonists": "Agonistes alpha",
     "carbonic_inhibitors": "Inhibiteurs de l'anhydrase carbonique",
-    "prostaglandins": "Prostaglandines"
+    "prostaglandins": "Prostaglandines",
+    "sympathomimetics": "Sympathomimétiques",
+    "beta_blockers": "Bêta-bloquants",
+    "mast_cell_stabilizers": "Stabilisateurs mastocytaires",
+    "artificial_tears": "Larmes artificielles"
   },
   "drugTypes": {
     "solution": "Solution",
@@ -133,5 +359,42 @@
     "ointment": "Pommade",
     "gel": "Gel",
     "emulsion": "Émulsion"
+  },
+  "drugList": {
+    "title": "Catégories de Médicaments",
+    "showCategories": "Afficher les Catégories",
+    "showAllDrugs": "Afficher Tous les Médicaments",
+    "categoryDescriptions": {
+      "antibiotics": "Médicaments antibactériens",
+      "nsaids": "Anti-inflammatoires non stéroïdiens",
+      "corticosteroids": "Anti-inflammatoires stéroïdiens",
+      "antihistamines": "Médicaments contre les allergies",
+      "mastocyte": "Stabilisateurs des mastocytes",
+      "parasympathomimetics": "Médicaments cholinergiques",
+      "parasympatholytics": "Gouttes pour la dilatation pupillaire",
+      "sympatholytics": "Médicaments pour réduire la pression",
+      "alpha_agonists": "Gouttes pour réduire la PIO",
+      "carbonic_inhibitors": "Suppresseurs de l'humeur aqueuse",
+      "prostaglandins": "Amplificateurs de l'écoulement",
+      "sympathomimetics": "Stimulants sympathiques",
+      "beta_blockers": "Bloqueurs bêta-adrénergiques",
+      "mast_cell_stabilizers": "Stabilisateurs mastocytaires",
+      "artificial_tears": "Larmes artificielles"
+    },
+    "searchPlaceholder": "Rechercher un médicament...",
+    "noResults": "Aucun médicament trouvé",
+    "selectMedication": "Sélectionner un médicament",
+    "selectedMedications": "Médicaments sélectionnés",
+    "concentration": "Concentration",
+    "brandName": "Nom commercial",
+    "type": "Type",
+    "effect": "Effet",
+    "description": "Description",
+    "standardPosology": "Posologie standard",
+    "addToSchedule": "Ajouter au calendrier",
+    "removeFromSchedule": "Retirer du calendrier",
+    "categoryLegend": "Légende des catégories",
+    "filterByCategory": "Filtrer par catégorie",
+    "allCategories": "Toutes les catégories"
   }
 }

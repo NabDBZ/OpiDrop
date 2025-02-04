@@ -5,8 +5,10 @@ import { ContactForm } from '../components/ContactForm';
 import { Credits } from '../components/Credits';
 import { errorHandler } from '../utils/errorHandling';
 import { debugLogger } from '../utils/debugLogger';
+import { useTranslation } from 'react-i18next';
 
 export function ContactPage() {
+  const { t } = useTranslation();
   const [formStatus, setFormStatus] = useState<{
     type: 'success' | 'error' | null;
     message: string;
@@ -24,13 +26,13 @@ export function ContactPage() {
       
       setFormStatus({
         type: 'success',
-        message: 'Thank you for your message! We will get back to you soon.'
+        message: t('contact.form.success')
       });
     } catch (error) {
       errorHandler.wrap(async () => {
         setFormStatus({
           type: 'error',
-          message: 'An error occurred while sending your message. Please try again.'
+          message: t('contact.form.error')
         });
         throw error;
       });
@@ -45,13 +47,13 @@ export function ContactPage() {
           <div className="flex justify-between items-center mb-8">
             <Link to="/" className="glass-button inline-flex items-center px-4 py-2 rounded-lg">
               <ArrowLeft className="h-5 w-5 mr-2" />
-              Back to Home
+              {t('common.back')}
             </Link>
           </div>
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-white mb-4">Contact & Credits</h1>
+            <h1 className="text-4xl font-bold text-white mb-4">{t('contact.title')}</h1>
             <p className="text-xl text-white/90 max-w-3xl mx-auto">
-              Get in touch with us and learn more about the team behind OptiDrop
+              {t('contact.subtitle')}
             </p>
           </div>
         </div>
@@ -63,7 +65,7 @@ export function ContactPage() {
               <div className="w-12 h-12 rounded-xl bg-blue-600/20 flex items-center justify-center">
                 <Mail className="w-6 h-6 text-blue-400" />
               </div>
-              <h2 className="text-2xl font-bold text-white">Get in Touch</h2>
+              <h2 className="text-2xl font-bold text-white">{t('contact.getInTouch.title')}</h2>
             </div>
             
             <ContactForm onSubmit={handleFormSubmit} />

@@ -28,7 +28,7 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
   return (
     <div className="glass-card border-0">
       <div className="p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Administration Sequence</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('calendar.sequence.title')}</h2>
         
         {/* General Instructions */}
         <div className="bg-blue-50 p-6 rounded-xl mb-8">
@@ -38,20 +38,20 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-blue-900 mb-2">
-                Important Administration Guidelines
+                {t('calendar.sequence.guidelines.title')}
               </h3>
               <ul className="space-y-3 text-blue-800">
                 <li className="flex items-center space-x-2">
                   <span className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">1</span>
-                  <span>Follow the sequence numbers for proper administration order</span>
+                  <span>{t('calendar.sequence.guidelines.followSequence')}</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <span className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">2</span>
-                  <span>Wait 10 minutes between different eye drops</span>
+                  <span>{t('calendar.sequence.guidelines.waitBetween')}</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <span className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-medium">3</span>
-                  <span>Apply drops at consistent times each day</span>
+                  <span>{t('calendar.sequence.guidelines.consistentTimes')}</span>
                 </li>
               </ul>
             </div>
@@ -61,7 +61,7 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
         <div className="space-y-8">
           {/* Sequence Order */}
           <div className="bg-gray-50 p-6 rounded-xl">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Administration Order</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('calendar.sequence.administrationOrder')}</h3>
             <div className="space-y-4">
               {drugs.map((drug) => {
                 const colors = drugColors[drug.effect];
@@ -71,20 +71,23 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
                       {drug.sequenceNumber}
                     </div>
                     <div
-                      className={`flex-1 p-4 rounded-xl transition-all duration-200 hover:shadow-md
-                        ${colors.bg}`}
+                      className={`flex-1 p-4 rounded-xl transition-all duration-200 hover:shadow-md`}
+                      style={{
+                        backgroundColor: colors.bg,
+                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+                      }}
                     >
                       <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/50">
-                          <DrugSymbol symbol={drug.symbol} className="text-xl" />
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-white/80`}>
+                          <DrugSymbol symbol={drug.symbol} className={`text-xl ${colors.text}`} />
                         </div>
                         <div>
-                          <div className="font-semibold text-gray-900">{drug.name}</div>
+                          <div className="font-semibold" style={{ color: colors.text }}>{drug.name}</div>
                           {drug.brandName && (
                             <div className="text-sm text-gray-600">({drug.brandName})</div>
                           )}
                           <div className="mt-1 flex items-center space-x-2">
-                            <span className={`px-2 py-0.5 rounded-md text-sm font-medium ${colors.text} bg-white/75`}>
+                            <span className={`px-2 py-0.5 rounded-md text-sm font-medium bg-white/80`} style={{ color: colors.text }}>
                               {drug.concentration}
                             </span>
                           </div>
@@ -106,7 +109,7 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
                     <div className="flex items-center space-x-2">
                       <AlertCircle className="h-5 w-5 text-amber-600" />
                       <h4 className="font-semibold text-amber-900">
-                        Multiple Drops at Same Time Slot
+                        {t('calendar.sequence.multipleDrops.title')}
                       </h4>
                     </div>
                   </div>
@@ -118,8 +121,7 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
                       </div>
                       <div>
                         <p className="text-amber-800 mb-4">
-                          The following drops are scheduled for the same time slot. 
-                          To ensure proper absorption and effectiveness:
+                          {t('calendar.sequence.multipleDrops.description')}
                         </p>
                         <ul className="space-y-3 mb-4">
                           {groupDrugs.map((drug, index) => (
@@ -128,16 +130,16 @@ export function DrugSequenceSummary({ drugs }: DrugSequenceSummaryProps) {
                                 {index + 1}
                               </span>
                               <span className="font-medium text-amber-900">{drug.name}</span>
-                              <span className="text-amber-700">(Drop #{drug.sequenceNumber})</span>
+                              <span className="text-amber-700">({t('calendar.sequence.drop')} #{drug.sequenceNumber})</span>
                             </li>
                           ))}
                         </ul>
                         <div className="bg-white/50 rounded-lg p-4">
-                          <h5 className="font-medium text-amber-900 mb-2">Administration Instructions:</h5>
+                          <h5 className="font-medium text-amber-900 mb-2">{t('calendar.sequence.multipleDrops.instructions.title')}</h5>
                           <ol className="list-decimal list-inside space-y-2 text-amber-800">
-                            <li>Follow the sequence numbers (lower numbers first)</li>
-                            <li>Wait 10 minutes between each drop</li>
-                            <li>Gently blot excess with tissue after each drop</li>
+                            <li>{t('calendar.sequence.multipleDrops.instructions.followNumbers')}</li>
+                            <li>{t('calendar.sequence.multipleDrops.instructions.waitTenMinutes')}</li>
+                            <li>{t('calendar.sequence.multipleDrops.instructions.blotExcess')}</li>
                           </ol>
                         </div>
                       </div>

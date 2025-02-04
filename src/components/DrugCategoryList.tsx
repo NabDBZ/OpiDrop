@@ -115,13 +115,13 @@ export function DrugCategoryList({ drugs, selectedCategory, onDrugSelect, select
   return (
     <div className="glass-card border-0 p-6" ref={containerRef}>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-white">Medication Categories</h2>
+        <h2 className="text-2xl font-bold text-white">{t('drugList.title')}</h2>
         <button
           onClick={() => setShowAllDrugs(!showAllDrugs)}
           className="glass-button px-4 py-2 rounded-lg flex items-center space-x-2"
         >
           <List className="w-5 h-5" />
-          <span>{showAllDrugs ? 'Show Categories' : 'Show All Drugs'}</span>
+          <span>{showAllDrugs ? t('drugList.showCategories') : t('drugList.showAllDrugs')}</span>
         </button>
       </div>
 

@@ -22,16 +22,16 @@ export default function CalendarTool() {
   const [selectedSchedules, setSelectedSchedules] = useState<Record<string, string>>({});
 
   const scheduleOptions = [
-    { value: 'once', label: 'Once Daily (DIE)' },
-    { value: 'twice', label: 'Twice Daily (BID)' },
-    { value: 'three', label: 'Three Times Daily (TID)' },
-    { value: 'four', label: 'Four Times Daily (QID)' },
-    { value: 'custom', label: 'Custom Schedule' }
+    { value: 'once', label: t('calendar.schedules.once') },
+    { value: 'twice', label: t('calendar.schedules.twice') },
+    { value: 'three', label: t('calendar.schedules.three') },
+    { value: 'four', label: t('calendar.schedules.four') },
+    { value: 'custom', label: t('calendar.schedules.custom') }
   ];
 
   const durationOptions = [1, 2, 3, 4, 6, 8, 12].map(weeks => ({
     value: weeks * 7,
-    label: `${weeks} ${weeks === 1 ? 'week' : 'weeks'}`
+    label: `${weeks} ${weeks === 1 ? t('calendar.schedules.week') : t('calendar.schedules.weeks')}`
   }));
 
   const drugCategories = [

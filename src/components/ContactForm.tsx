@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Send, AlertCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface FormData {
   name: string;
@@ -17,6 +18,7 @@ interface ContactFormProps {
 }
 
 export function ContactForm({ onSubmit }: ContactFormProps) {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
@@ -31,23 +33,23 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
     const newErrors: FormErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = t('contact.form.errors.nameRequired');
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = t('contact.form.errors.emailRequired');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('contact.form.errors.emailInvalid');
     }
 
     if (!formData.subject) {
-      newErrors.subject = 'Please select a subject';
+      newErrors.subject = t('contact.form.errors.subjectRequired');
     }
 
     if (!formData.message.trim()) {
-      newErrors.message = 'Message is required';
+      newErrors.message = t('contact.form.errors.messageRequired');
     } else if (formData.message.trim().length < 20) {
-      newErrors.message = 'Message must be at least 20 characters long';
+      newErrors.message = t('contact.form.errors.messageLength');
     }
 
     setErrors(newErrors);
@@ -90,7 +92,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
       {/* Name Field */}
       <div>
         <label htmlFor="name" className="block text-lg font-medium text-white mb-2">
-          Full Name
+          {t('contact.form.name')}
         </label>
         <input
           type="text"
@@ -101,7 +103,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           className={`glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border ${
             errors.name ? 'border-red-400' : 'border-white/20 focus:border-blue-400'
           } placeholder-white/40`}
-          placeholder="Enter your full name"
+          placeholder={t('contact.form.namePlaceholder')}
         />
         {errors.name && (
           <div className="mt-2 flex items-center text-base text-red-400">
@@ -114,7 +116,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
       {/* Email Field */}
       <div>
         <label htmlFor="email" className="block text-lg font-medium text-white mb-2">
-          Email Address
+          {t('contact.form.email')}
         </label>
         <input
           type="email"
@@ -125,7 +127,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           className={`glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border ${
             errors.email ? 'border-red-400' : 'border-white/20 focus:border-blue-400'
           } placeholder-white/40`}
-          placeholder="Enter your email address"
+          placeholder={t('contact.form.emailPlaceholder')}
         />
         {errors.email && (
           <div className="mt-2 flex items-center text-base text-red-400">
@@ -138,7 +140,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
       {/* Subject Field */}
       <div>
         <label htmlFor="subject" className="block text-lg font-medium text-white mb-2">
-          Subject
+          {t('contact.form.subject')}
         </label>
         <select
           id="subject"
@@ -147,17 +149,17 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           onChange={handleChange}
           className="glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border border-white/20 focus:border-blue-400 text-white"
         >
-          <option value="General Inquiry" className="bg-gray-900 text-white">General Inquiry</option>
-          <option value="Bug Report" className="bg-gray-900 text-white">Bug Report</option>
-          <option value="Feature Request" className="bg-gray-900 text-white">Feature Request</option>
-          <option value="Business Inquiry" className="bg-gray-900 text-white">Business Inquiry</option>
+          <option value="General Inquiry" className="bg-gray-900 text-white">{t('contact.form.subjects.general')}</option>
+          <option value="Bug Report" className="bg-gray-900 text-white">{t('contact.form.subjects.bug')}</option>
+          <option value="Feature Request" className="bg-gray-900 text-white">{t('contact.form.subjects.feature')}</option>
+          <option value="Business Inquiry" className="bg-gray-900 text-white">{t('contact.form.subjects.business')}</option>
         </select>
       </div>
 
       {/* Message Field */}
       <div>
         <label htmlFor="message" className="block text-lg font-medium text-white mb-2">
-          Message
+          {t('contact.form.message')}
         </label>
         <textarea
           id="message"
@@ -168,7 +170,7 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
           className={`glass-input w-full px-4 py-3 rounded-lg text-lg bg-white/10 border resize-none ${
             errors.message ? 'border-red-400' : 'border-white/20 focus:border-blue-400'
           } placeholder-white/40`}
-          placeholder="Enter your message (minimum 20 characters)"
+          placeholder={t('contact.form.messagePlaceholder')}
         />
         {errors.message && (
           <div className="mt-2 flex items-center text-base text-red-400">
@@ -192,12 +194,12 @@ export function ContactForm({ onSubmit }: ContactFormProps) {
               <span className="animate-spin mr-2">
                 <Send className="w-5 h-5" />
               </span>
-              <span>Sending...</span>
+              <span>{t('contact.form.sending')}</span>
             </>
           ) : (
             <>
               <Send className="w-5 h-5 mr-2" />
-              <span>Send Message</span>
+              <span>{t('contact.form.send')}</span>
             </>
           )}
         </button>
