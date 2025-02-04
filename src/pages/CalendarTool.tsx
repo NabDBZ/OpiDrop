@@ -249,16 +249,12 @@ export default function CalendarTool() {
         </div>
 
         <div className="md:hidden">
-          <div className="glass-card p-4 mb-8 overflow-hidden">
-            <div 
-              className="flex overflow-x-auto pb-2 -mx-1 snap-x snap-mandatory after:content-[''] after:flex-shrink-0 after:w-4" 
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
-            >
+          {/* Category Icons Grid */}
+          <div className="glass-card p-4 mb-4">
+            <div className="grid grid-cols-3 gap-3">
               {drugCategories.map(category => {
                 const colors = drugColors[category.value as keyof typeof drugColors];
                 const isSelected = selectedCategory === category.value;
-                
-                // Get the category symbol from the drug database
                 const categoryDrug = drugDatabase.find(drug => drug.effect === category.value);
                 const defaultSymbol = drugDatabase[0]?.symbol || 'A';
                 const symbol = categoryDrug?.symbol || defaultSymbol;
@@ -267,20 +263,21 @@ export default function CalendarTool() {
                   <button
                     key={category.value}
                     onClick={() => setSelectedCategory(isSelected ? null : category.value)}
-                    className={`flex-shrink-0 w-20 p-3 mx-1 rounded-lg transition-all flex flex-col items-center snap-start ${
+                    className={`p-3 rounded-lg transition-all flex flex-col items-center ${
                       isSelected 
-                        ? `${colors.bg} ${colors.text} shadow-lg scale-105` 
-                        : 'bg-white/5 hover:bg-white/10'
+                        ? `${colors.bg} ${colors.text} shadow-lg` 
+                        : 'bg-white/10 hover:bg-white/20'
                     }`}
-                    title={category.label}
                   >
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                    <div className={`w-12 h-12 mb-3 rounded-lg flex items-center justify-center ${
                       isSelected ? 'bg-white/20' : colors.bg
                     }`}>
-                      <DrugSymbol symbol={symbol} className={`text-lg ${isSelected ? 'text-white' : ''}`} />
+                      <DrugSymbol symbol={symbol} className={`text-xl ${isSelected ? 'text-white' : ''}`} />
                     </div>
-                    <div className="mt-2 text-xs text-center leading-tight line-clamp-2">
-                      {category.label}
+                    <div className={`text-sm font-medium text-center leading-tight min-h-[2.5em] flex items-center px-1 ${
+                      isSelected ? 'text-white' : 'text-white/90'
+                    }`}>
+                      {category.label.split('(')[0].trim()}
                     </div>
                   </button>
                 );
@@ -288,9 +285,10 @@ export default function CalendarTool() {
             </div>
           </div>
 
+          {/* Filtered Drugs List */}
           {filteredDrugs.length > 0 && selectedCategory && (
-            <div className="glass-card p-4 mb-8">
-              <div className="grid grid-cols-2 gap-3">
+            <div className="glass-card p-4 mb-4">
+              <div className="grid grid-cols-1 gap-3">
                 {filteredDrugs.map(drug => {
                   const colors = drugColors[drug.effect];
                   const isSelected = selectedDrugs.some(d => d.id === drug.id);
@@ -299,18 +297,18 @@ export default function CalendarTool() {
                     <button
                       key={drug.id}
                       onClick={() => handleDrugSelect(drug)}
-                      className={`flex items-center p-3 rounded-lg transition-all ${
+                      className={`flex items-center p-4 rounded-lg transition-all ${
                         isSelected 
-                          ? `${colors.bg} ${colors.text} shadow-lg transform scale-[1.02]` 
+                          ? `${colors.bg} ${colors.text} shadow-lg` 
                           : 'bg-white/5 hover:bg-white/10'
                       }`}
                     >
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                      <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
                         isSelected ? 'bg-white/20' : colors.bg
                       }`}>
-                        <DrugSymbol symbol={drug.symbol} className={`text-base ${isSelected ? 'text-white' : ''}`} />
+                        <DrugSymbol symbol={drug.symbol} className="text-lg" />
                       </div>
-                      <div className="ml-3 flex-1 min-w-0 text-left">
+                      <div className="ml-4 flex-1 min-w-0">
                         <div className="text-sm font-medium text-white truncate">
                           {drug.name}
                         </div>
@@ -321,7 +319,7 @@ export default function CalendarTool() {
                         )}
                       </div>
                       {isSelected && (
-                        <Check className="w-5 h-5 ml-2 flex-shrink-0" />
+                        <Check className="w-5 h-5 ml-3 flex-shrink-0" />
                       )}
                     </button>
                   );
