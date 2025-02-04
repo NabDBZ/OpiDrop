@@ -1,56 +1,67 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Globe } from 'lucide-react';
-
-const languages = [
-  { code: 'en', name: 'English' },
-  { code: 'fr', name: 'Français' }
-];
+import { ChevronDown } from 'lucide-react';
 
 export function LanguageSelector() {
-  const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
+  const { i18n } = useTranslation();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const languages = [
+    { code: 'en', name: 'English', flag: '🇬🇧' },
+    { code: 'fr', name: 'Français', flag: '🇫🇷' }
+  ];
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const getCurrentLanguage = () => {
+    return languages.find(lang => lang.code === i18n.language) || languages[0];
+  };
+
+  const handleLanguageChange = (langCode: string) => {
+    i18n.changeLanguage(langCode);
+    setIsOpen(false);
+  };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative" ref={dropdownRef}>
       <button
-        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex items-center space-x-1 px-2 py-1.5 rounded-lg hover:bg-white/5 transition-colors"
       >
-        <Globe className="h-5 w-5 mr-2" />
-        {t('common.language')}
+        <span className="text-xl" role="img" aria-label={getCurrentLanguage().name}>
+          {getCurrentLanguage().flag}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-white/80 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {isOpen && (
-        <div
-          className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 z-50"
-          role="menu"
-          aria-orientation="vertical"
-          aria-labelledby="language-menu"
-        >
-          <div className="py-1">
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                className={`${
-                  i18n.language === lang.code
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-700'
-                } group flex items-center w-full px-4 py-2 text-sm hover:bg-gray-50`}
-                role="menuitem"
-                onClick={() => {
-                  i18n.changeLanguage(lang.code);
-                  setIsOpen(false);
-                }}
-              >
-                {lang.name}
-                {i18n.language === lang.code && (
-                  <span className="ml-auto">✓</span>
-                )}
-              </button>
-            ))}
-          </div>
+        <div className="absolute right-0 mt-1 w-32 rounded-lg backdrop-blur-md bg-black/40 shadow-lg border border-white/10 overflow-hidden">
+          {languages.map((language) => (
+            <button
+              key={language.code}
+              onClick={() => handleLanguageChange(language.code)}
+              className={`w-full flex items-center space-x-2 px-3 py-2 text-sm ${
+                language.code === i18n.language
+                  ? 'bg-blue-600/20 text-white'
+                  : 'text-white/80 hover:bg-white/5'
+              } transition-colors`}
+            >
+              <span className="text-xl" role="img" aria-label={language.name}>
+                {language.flag}
+              </span>
+              <span>{language.name}</span>
+            </button>
+          ))}
         </div>
       )}
     </div>

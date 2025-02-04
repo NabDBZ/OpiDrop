@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, Clock, Calendar, Settings, CheckCircle2, Info, Play } from 'lucide-react';
+import { Search, Filter, Clock, Calendar, Settings, CheckCircle2, Info, Play, ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export function Features() {
@@ -49,67 +49,65 @@ export function Features() {
   ];
 
   return (
-    <div className="py-24">
+    <div className="py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+        <div className="text-center mb-6">
+          <h2 className="text-4xl font-bold text-white mb-2">
             {t('home.features.title')}
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-white/80">
+          <p className="text-xl text-white/80">
             {t('home.features.subtitle')}
           </p>
         </div>
 
-        <div className="mt-16 space-y-16">
-          {features.map((feature, index) => (
-            <div 
-              key={feature.name}
-              className={`flex flex-col lg:flex-row gap-12 items-center ${
-                index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-              }`}
-            >
-              <div className="flex-1">
+        <div className="flex justify-center items-center overflow-x-auto md:overflow-x-visible">
+          <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-6 py-4">
+            {features.map((feature, index) => (
+              <React.Fragment key={feature.name}>
                 <div 
-                  className="glass-card cursor-pointer transform transition-all duration-300 hover:scale-105"
+                  className="glass-card w-full md:w-[280px] transform transition-all duration-300 hover:scale-105 flex-shrink-0"
                   onMouseEnter={() => setActiveFeature(index)}
                   onMouseLeave={() => setActiveFeature(null)}
                 >
-                  <div className="relative h-64">
+                  <div className="relative h-32 overflow-hidden rounded-t-xl">
                     <img
                       src={activeFeature === index ? feature.demo : feature.image}
                       alt={feature.name}
-                      className="w-full h-full object-cover rounded-t-xl transition-opacity duration-500"
+                      className="w-full h-full object-cover transition-opacity duration-500"
                     />
                     {activeFeature === index && (
                       <div className="absolute inset-0 bg-blue-600/20 flex items-center justify-center">
-                        <Play className="w-16 h-16 text-white" />
+                        <Play className="w-8 h-8 text-white" />
                       </div>
                     )}
                   </div>
-                  <div className="p-8">
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center">
-                        <feature.icon className="h-6 w-6 text-blue-400" />
+                  <div className="p-4">
+                    <div className="flex items-center mb-2">
+                      <div className="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center">
+                        <feature.icon className="h-4 w-4 text-blue-400" />
                       </div>
-                      <h3 className="text-2xl font-bold text-white">{feature.name}</h3>
+                      <h3 className="ml-2 text-lg font-semibold text-white">{feature.name}</h3>
                     </div>
-                    <p className="text-white/80 mb-6">{feature.description}</p>
-                    <div className="grid grid-cols-2 gap-4">
+                    <p className="text-white/80 mb-2 text-sm">{feature.description}</p>
+                    <div className="space-y-1">
                       {feature.steps.map((step, stepIndex) => (
                         <div 
                           key={stepIndex}
-                          className="flex items-start space-x-2 bg-white/5 p-3 rounded-lg transform transition-transform hover:scale-105"
+                          className="flex items-center space-x-1.5 bg-white/5 p-1.5 rounded-lg"
                         >
-                          <div className="w-1.5 h-1.5 bg-blue-400 rounded-full mt-2" />
-                          <span className="text-sm text-white/90">{step}</span>
+                          <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                          <span className="text-xs text-white/90">{step}</span>
                         </div>
                       ))}
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+                {index < features.length - 1 && (
+                  <ArrowRight className="hidden md:block w-6 h-6 text-blue-400 flex-shrink-0 transform rotate-90 md:rotate-0 my-2 md:my-0" />
+                )}
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
     </div>

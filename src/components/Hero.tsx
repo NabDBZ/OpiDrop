@@ -9,13 +9,13 @@ export function Hero() {
   const { t } = useTranslation();
 
   return (
-    <div className="relative overflow-hidden min-h-screen">
+    <div className="relative overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="relative pb-12 pt-20 sm:pb-16 sm:pt-24">
+        <div className="relative pb-8 pt-12 sm:pb-12 sm:pt-16">
           <main className="mt-8 sm:mt-12">
             <div className="mx-auto max-w-7xl">
-              <div className="lg:grid lg:grid-cols-12 lg:gap-8">
-                <div className="px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left lg:flex lg:items-center">
+              <div className="flex justify-center">
+                <div className="px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:text-center lg:flex lg:items-center">
                   <div className="backdrop-blur-sm bg-white/5 rounded-2xl p-6 shadow-lg border border-white/20">
                     <h1 className="mt-4 text-4xl tracking-tight font-extrabold text-white sm:mt-5 sm:text-6xl lg:mt-6 xl:text-6xl">
                       <span className="block">{t('home.hero.title.part1')}</span>
@@ -49,31 +49,10 @@ export function Hero() {
                           <Play className="w-4 h-4 ml-2" />
                         </button>
                       </div>
-                      <p className="mt-4 text-sm text-gray-700 flex items-center justify-center sm:justify-start">
+                      <p className="mt-4 text-sm text-gray-700 flex items-center justify-center">
                         <span className="w-2 h-2 bg-green-500 rounded-full mr-2" />
                         {t('home.hero.noAccount')}
                       </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-16 sm:mt-24 lg:mt-0 lg:col-span-6">
-                  <div className="backdrop-blur-sm bg-white/10 sm:max-w-md sm:w-full sm:mx-auto sm:rounded-2xl sm:overflow-hidden shadow-xl border border-white/10">
-                    <div className="px-4 py-8 sm:px-10">
-                      <div className="backdrop-blur-sm bg-blue-50/30 p-4 rounded-xl border border-blue-100/30">
-                        <div className="flex">
-                          <div className="flex-shrink-0">
-                            <Eye className="h-5 w-5 text-blue-600" />
-                          </div>
-                          <div className="ml-3">
-                            <h3 className="text-sm font-medium text-blue-900">
-                              {t('home.hero.guidelines.title')}
-                            </h3>
-                            <p className="mt-2 text-sm text-blue-800">
-                              {t('home.hero.guidelines.description')}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </div>
