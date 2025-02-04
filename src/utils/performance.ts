@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 // Performance monitoring utilities
 export const performanceMonitor = {
   // Start timing
@@ -41,35 +43,13 @@ export const performanceMonitor = {
 export function usePerformanceMonitor(componentName: string) {
   useEffect(() => {
     performanceMonitor.startTiming(`mount_${componentName}`);
-    return () => performanceMonitor.endTiming(`mount_${componentName}`);
+    return () => {
+      performanceMonitor.endTiming(`mount_${componentName}`);
+      // Return void to satisfy TypeScript
+      return;
+    };
   }, [componentName]);
 }
 
-// Lazy loading image component
-export function LazyImage({ src, alt, className }: { 
-  src: string; 
-  alt: string; 
-  className?: string;
-}) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    if (imgRef.current && imgRef.current.complete) {
-      setIsLoaded(true);
-    }
-  }, []);
-
-  return (
-    <img
-      ref={imgRef}
-      src={src}
-      alt={alt}
-      className={`transition-opacity duration-300 ${
-        isLoaded ? 'opacity-100' : 'opacity-0'
-      } ${className}`}
-      onLoad={() => setIsLoaded(true)}
-      loading="lazy"
-    />
-  );
-}
+// Re-export LazyImage from its new location
+export { LazyImage } from '../components/LazyImage';
