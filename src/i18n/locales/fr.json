@@ -244,6 +244,11 @@
       "completed": "Doses Complétées",
       "remaining": "Doses Restantes",
       "total": "Total des Doses"
+    },
+    "treatmentStart": "Début du traitement : {{date}}",
+    "errors": {
+      "invalidDate": "Veuillez entrer une date valide",
+      "pastDate": "La date de début du traitement ne peut pas être dans le passé"
     }
   },
   "header": {
@@ -401,6 +406,9 @@
     "removeFromSchedule": "Retirer du calendrier",
     "categoryLegend": "Légende des catégories",
     "filterByCategory": "Filtrer par catégorie",
-    "allCategories": "Toutes les catégories"
+    "allCategories": "Toutes les catégories",
+    "resultsFound": "{{count}} {{medication}} trouvé(s)",
+    "medication": "médicament",
+    "medications": "médicaments"
   }
 }

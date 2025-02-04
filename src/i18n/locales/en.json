@@ -219,6 +219,11 @@
       "completed": "Completed Doses",
       "remaining": "Remaining Doses",
       "total": "Total Doses"
+    },
+    "treatmentStart": "Treatment Start: {{date}}",
+    "errors": {
+      "invalidDate": "Please enter a valid date",
+      "pastDate": "Treatment start date cannot be in the past"
     }
   },
   "header": {
@@ -376,6 +381,9 @@
     "removeFromSchedule": "Remove from schedule",
     "categoryLegend": "Category legend",
     "filterByCategory": "Filter by category",
-    "allCategories": "All categories"
+    "allCategories": "All categories",
+    "resultsFound": "{{count}} {{medication}} found",
+    "medication": "medication",
+    "medications": "medications"
   }
 }

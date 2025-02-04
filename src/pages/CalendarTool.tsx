@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { ArrowLeft, Search, RefreshCw, Filter, Clock, Calendar as CalendarIcon, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Search, RefreshCw, Filter, Clock, Calendar as CalendarIcon, AlertCircle, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { drugDatabase } from '../data/drugDatabase';
@@ -12,11 +12,13 @@ import { DrugSequenceSummary } from '../components/DrugSequenceSummary';
 import { DrugSymbol } from '../components/DrugSymbol';
 
 export default function CalendarTool() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedDrugs, setSelectedDrugs] = useState<DrugType[]>([]);
   const [startDate, setStartDate] = useState(new Date());
+  const [selectedStartDate, setSelectedStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [dateError, setDateError] = useState<string | null>(null);
   const [customSchedules, setCustomSchedules] = useState<Record<string, { frequency: number; interval: number; startTime: string }>>({});
   const [treatmentDurations, setTreatmentDurations] = useState<Record<string, number>>({});
   const [selectedSchedules, setSelectedSchedules] = useState<Record<string, string>>({});
@@ -84,6 +86,37 @@ export default function CalendarTool() {
     });
   };
 
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputDate = e.target.value;
+    setSelectedStartDate(inputDate);
+    
+    // Validate the date
+    const newDate = new Date(inputDate + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (isNaN(newDate.getTime())) {
+      setDateError(t('calendar.errors.invalidDate'));
+      return;
+    }
+
+    if (newDate < today) {
+      setDateError(t('calendar.errors.pastDate'));
+      return;
+    }
+
+    setDateError(null);
+    setStartDate(newDate);
+  };
+
+  const handleGenerateCalendar = () => {
+    if (dateError) {
+      return;
+    }
+    const selectedDate = new Date(selectedStartDate + 'T00:00:00');
+    setStartDate(selectedDate);
+  };
+
   const filteredDrugs = useMemo(() => {
     return drugDatabase.filter(drug => {
       const matchesSearch = searchQuery.toLowerCase() === '' ||
@@ -117,10 +150,6 @@ export default function CalendarTool() {
     }));
   }, [selectedDrugs, customSchedules, treatmentDurations, selectedSchedules]);
 
-  const handleGenerateCalendar = () => {
-    setStartDate(new Date());
-  };
-
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -129,10 +158,23 @@ export default function CalendarTool() {
             <ArrowLeft className="h-5 w-5 mr-2" />
             {t('common.back')}
           </Link>
-          <h1 className="text-3xl font-bold text-white">{t('calendar.title')}</h1>
+          <h1 className="text-3xl font-bold text-white">
+            {t('calendar.title')}
+            {startDate && (
+              <span className="block text-lg font-normal text-white/80 mt-1">
+                {t('calendar.treatmentStart', {
+                  date: startDate.toLocaleDateString(i18n.language, {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })
+                })}
+              </span>
+            )}
+          </h1>
         </div>
 
-        <div className="glass-card p-6 mb-8">
+        <div className="glass-card p-6 mb-8 sticky top-0 z-50 backdrop-blur-lg">
           <div className="flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-4">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
@@ -173,23 +215,121 @@ export default function CalendarTool() {
               )}
             </div>
           </div>
+          
+          {(searchQuery || selectedCategory) && (
+            <div className="mt-4 text-sm text-white/80">
+              {filteredDrugs.length === 0 ? (
+                t('drugList.noResults')
+              ) : (
+                t('drugList.resultsFound', {
+                  count: filteredDrugs.length,
+                  medication: filteredDrugs.length === 1 ? t('drugList.medication') : t('drugList.medications')
+                })
+              )}
+            </div>
+          )}
         </div>
 
-        <div onClick={(e) => {
-          const category = (e.target as HTMLElement).closest('[data-category]')?.getAttribute('data-category');
-          if (category) {
-            setSelectedCategory(category === selectedCategory ? null : category);
-          }
-        }}>
-          <DrugLegend />
+        <div className="hidden md:block">
+          <div onClick={(e) => {
+            const category = (e.target as HTMLElement).closest('[data-category]')?.getAttribute('data-category');
+            if (category) {
+              setSelectedCategory(category === selectedCategory ? null : category);
+            }
+          }}>
+            <DrugLegend />
+          </div>
+
+          <DrugCategoryList
+            drugs={filteredDrugs}
+            selectedCategory={selectedCategory}
+            onDrugSelect={handleDrugSelect}
+            selectedDrugs={selectedDrugs}
+          />
         </div>
 
-        <DrugCategoryList
-          drugs={filteredDrugs}
-          selectedCategory={selectedCategory}
-          onDrugSelect={handleDrugSelect}
-          selectedDrugs={selectedDrugs}
-        />
+        <div className="md:hidden">
+          <div className="glass-card p-4 mb-8 overflow-hidden">
+            <div 
+              className="flex overflow-x-auto pb-2 -mx-1 snap-x snap-mandatory after:content-[''] after:flex-shrink-0 after:w-4" 
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+            >
+              {drugCategories.map(category => {
+                const colors = drugColors[category.value as keyof typeof drugColors];
+                const isSelected = selectedCategory === category.value;
+                
+                // Get the category symbol from the drug database
+                const categoryDrug = drugDatabase.find(drug => drug.effect === category.value);
+                const defaultSymbol = drugDatabase[0]?.symbol || 'A';
+                const symbol = categoryDrug?.symbol || defaultSymbol;
+                
+                return (
+                  <button
+                    key={category.value}
+                    onClick={() => setSelectedCategory(isSelected ? null : category.value)}
+                    className={`flex-shrink-0 w-20 p-3 mx-1 rounded-lg transition-all flex flex-col items-center snap-start ${
+                      isSelected 
+                        ? `${colors.bg} ${colors.text} shadow-lg scale-105` 
+                        : 'bg-white/5 hover:bg-white/10'
+                    }`}
+                    title={category.label}
+                  >
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                      isSelected ? 'bg-white/20' : colors.bg
+                    }`}>
+                      <DrugSymbol symbol={symbol} className={`text-lg ${isSelected ? 'text-white' : ''}`} />
+                    </div>
+                    <div className="mt-2 text-xs text-center leading-tight line-clamp-2">
+                      {category.label}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {filteredDrugs.length > 0 && selectedCategory && (
+            <div className="glass-card p-4 mb-8">
+              <div className="grid grid-cols-2 gap-3">
+                {filteredDrugs.map(drug => {
+                  const colors = drugColors[drug.effect];
+                  const isSelected = selectedDrugs.some(d => d.id === drug.id);
+                  
+                  return (
+                    <button
+                      key={drug.id}
+                      onClick={() => handleDrugSelect(drug)}
+                      className={`flex items-center p-3 rounded-lg transition-all ${
+                        isSelected 
+                          ? `${colors.bg} ${colors.text} shadow-lg transform scale-[1.02]` 
+                          : 'bg-white/5 hover:bg-white/10'
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${
+                        isSelected ? 'bg-white/20' : colors.bg
+                      }`}>
+                        <DrugSymbol symbol={drug.symbol} className={`text-base ${isSelected ? 'text-white' : ''}`} />
+                      </div>
+                      <div className="ml-3 flex-1 min-w-0 text-left">
+                        <div className="text-sm font-medium text-white truncate">
+                          {drug.name}
+                        </div>
+                        {drug.brandName && (
+                          <div className="text-xs text-white/60 truncate">
+                            {drug.brandName}
+                          </div>
+                        )}
+                      </div>
+                      {isSelected && (
+                        <Check className="w-5 h-5 ml-2 flex-shrink-0" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
 
         {selectedDrugs.length > 0 && (
           <>
@@ -197,15 +337,39 @@ export default function CalendarTool() {
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-white">
-                    Selected Medications
+                    {t('calendar.selectedMedications')}
                   </h2>
-                  <button
-                    onClick={handleGenerateCalendar}
-                    className="glass-button px-6 py-3 rounded-lg"
-                  >
-                    <CalendarIcon className="h-5 w-5 mr-2" />
-                    Generate Calendar
-                  </button>
+                  <div className="flex items-center space-x-4">
+                    <div className="relative flex flex-col">
+                      <div className="relative">
+                        <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
+                        <input
+                          type="date"
+                          value={selectedStartDate}
+                          onChange={handleStartDateChange}
+                          className={`glass-input pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 ${
+                            dateError ? 'ring-2 ring-red-500/50' : 'focus:ring-blue-500/50'
+                          } text-white`}
+                          min={new Date().toISOString().split('T')[0]}
+                        />
+                      </div>
+                      {dateError && (
+                        <div className="absolute -bottom-6 left-0 text-sm text-red-400">
+                          {dateError}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      onClick={handleGenerateCalendar}
+                      className={`glass-button px-6 py-3 rounded-lg ${
+                        dateError ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                      disabled={!!dateError}
+                    >
+                      <CalendarIcon className="h-5 w-5 mr-2" />
+                      {t('calendar.generateCalendar')}
+                    </button>
+                  </div>
                 </div>
 
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

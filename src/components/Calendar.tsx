@@ -56,6 +56,112 @@ const POSOLOGY_TIME_SLOTS = {
   four: DEFAULT_TIME_SLOTS
 };
 
+// Add new component for mobile day card
+const MobileDayCard = ({ 
+  day, 
+  timeSlots, 
+  drugsByTime,
+  isDrugActiveOnDate,
+  isDoseCompleted,
+  handleDoseComplete,
+  setHoveredCell
+}: {
+  day: Date;
+  timeSlots: TimeSlot[];
+  drugsByTime: (DrugType & {
+    posology: string;
+    duration: number;
+    sequenceNumber: number;
+    customSchedule?: {
+      frequency: number;
+      interval: number;
+      startTime: string;
+    };
+  })[][];
+  isDrugActiveOnDate: (drug: DrugType & { duration: number }, date: Date) => boolean;
+  isDoseCompleted: (drugId: string, date: string, timeIndex: number) => boolean;
+  handleDoseComplete: (drugId: string, date: string, timeIndex: number) => void;
+  setHoveredCell: (cell: { drugId: string; date: string; timeIndex: number } | null) => void;
+}) => {
+  const dateStr = format(day, 'yyyy-MM-dd');
+  
+  return (
+    <div className={`bg-white rounded-xl shadow-sm mb-4 overflow-hidden
+      ${isSameDay(day, new Date()) ? 'ring-2 ring-blue-100' : ''}`}
+    >
+      {/* Day Header */}
+      <div className={`p-4 text-center border-b ${
+        isSameDay(day, new Date()) ? 'bg-blue-50' : 'bg-gray-50'
+      }`}>
+        <div className="text-lg font-bold text-gray-900">
+          {format(day, 'EEEE')}
+        </div>
+        <div className="text-2xl font-bold text-gray-900">
+          {format(day, 'd')}
+        </div>
+        <div className="text-sm text-gray-600">
+          {format(day, 'MMMM yyyy')}
+        </div>
+      </div>
+
+      {/* Time Slots */}
+      <div className="divide-y divide-gray-100">
+        {timeSlots.map((timeSlot, timeIndex) => {
+          const drugsAtTime = drugsByTime[timeIndex];
+          const activeDrugs = drugsAtTime.filter(drug => isDrugActiveOnDate(drug, day));
+
+          if (activeDrugs.length === 0) return null;
+
+          return (
+            <div key={timeIndex} className="p-4">
+              <div className="flex items-center space-x-3 mb-3">
+                <Clock className="h-4 w-4 text-gray-400" />
+                <span className="text-sm font-medium text-gray-700">
+                  {timeSlot.label}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {activeDrugs.map(drug => {
+                  const colors = drugColors[drug.effect];
+                  const isCompleted = isDoseCompleted(drug.id, dateStr, timeIndex);
+
+                  return (
+                    <button
+                      key={drug.id}
+                      onClick={() => handleDoseComplete(drug.id, dateStr, timeIndex)}
+                      onMouseEnter={() => setHoveredCell({ drugId: drug.id, date: dateStr, timeIndex })}
+                      onMouseLeave={() => setHoveredCell(null)}
+                      className={`relative w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200
+                        ${isCompleted 
+                          ? 'ring-2 ring-green-500 shadow-lg' 
+                          : 'hover:ring-2 hover:ring-blue-300 hover:shadow-md'}`}
+                      style={{ 
+                        backgroundColor: isCompleted ? colors.text : colors.bg,
+                        color: isCompleted ? colors.bg : colors.text
+                      }}
+                    >
+                      <div className="flex items-center justify-center">
+                        {isCompleted ? (
+                          <CheckCircle2 className="w-4 h-4" />
+                        ) : (
+                          <DrugSymbol symbol={drug.symbol} className="text-base" />
+                        )}
+                        <span className="absolute -top-1 -right-1 text-xs font-bold bg-white rounded-full w-4 h-4 flex items-center justify-center shadow-lg border border-gray-200">
+                          {drug.sequenceNumber}
+                        </span>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 export function Calendar({ selectedDrugs, startDate, onStartDateChange }: CalendarProps) {
   const { t } = useTranslation();
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -190,27 +296,27 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
   return (
     <div className="glass-card border-0" ref={calendarRef} data-calendar-container>
       {/* Calendar Header */}
-      <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-8 border-b border-gray-200">
+      <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-4 sm:p-8 border-b border-gray-200">
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => navigateWeek('prev')}
-            className="p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group print:hidden"
+            className="p-2 sm:p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group print:hidden"
           >
             <ChevronLeft className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </button>
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              {format(weekStart, 'MMMM d')} - {format(weekEnd, 'MMMM d, yyyy')}
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+              {format(weekStart, 'MMM d')} - {format(weekEnd, 'MMM d, yyyy')}
             </h2>
-            <p className="text-sm text-gray-600">
-              {t('calendar.treatmentStart')}: {selectionStart ? format(selectionStart, 'MMMM d, yyyy') : t('calendar.notSet')}
+            <p className="text-xs sm:text-sm text-gray-600">
+              {t('calendar.treatmentStart')}: {selectionStart ? format(selectionStart, 'MMM d, yyyy') : t('calendar.notSet')}
             </p>
           </div>
-          <div className="flex items-center space-x-4 print:hidden">
+          <div className="flex items-center space-x-2 sm:space-x-4 print:hidden">
             <button
               onClick={handleExportPDF}
               disabled={isExporting}
-              className={`p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group ${
+              className={`p-2 sm:p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group ${
                 isExporting ? 'opacity-50 cursor-not-allowed' : ''
               }`}
               title={t('calendar.export.button')}
@@ -221,7 +327,7 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
             </button>
             <button
               onClick={() => navigateWeek('next')}
-              className="p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group"
+              className="p-2 sm:p-3 hover:bg-white/50 rounded-xl transition-all duration-200 group"
             >
               <ChevronRight className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </button>
@@ -229,8 +335,8 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
         </div>
       </div>
 
-      {/* Calendar Grid */}
-      <div className="overflow-x-auto print:overflow-visible">
+      {/* Desktop Calendar Grid */}
+      <div className="hidden md:block overflow-x-auto print:overflow-visible">
         <div className="inline-block min-w-full align-middle">
           <div className="grid grid-cols-[auto_repeat(7,_minmax(160px,_1fr))] print:grid-cols-[auto_repeat(7,_1fr)]">
             {/* Time Column Header */}
@@ -362,6 +468,22 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Mobile Calendar View */}
+      <div className="md:hidden p-4">
+        {days.map((day, index) => (
+          <MobileDayCard
+            key={index}
+            day={day}
+            timeSlots={timeSlots}
+            drugsByTime={drugsByTime}
+            isDrugActiveOnDate={isDrugActiveOnDate}
+            isDoseCompleted={isDoseCompleted}
+            handleDoseComplete={handleDoseComplete}
+            setHoveredCell={setHoveredCell}
+          />
+        ))}
       </div>
 
       {/* Progress Section */}
