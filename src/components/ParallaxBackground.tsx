@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
 type ParallaxBackgroundProps = {
-  variant?: 'tool' | 'guide' | 'articles' | 'contact';
+  variant?: 'tool' | 'guide' | 'articles' | 'contact' | 'legal';
   className?: string;
 };
 
@@ -24,6 +24,10 @@ export function ParallaxBackground({ variant = 'tool', className = '' }: Paralla
     contact: {
       primary: '#B45309',
       secondary: '#C2410C'
+    },
+    legal: {
+      primary: '#1F2937',
+      secondary: '#374151'
     }
   };
 

@@ -1,17 +1,10 @@
 import React from 'react';
-import { Scroll } from 'lucide-react';
 
 export function AvicennaQuote() {
   return (
     <div className="bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900 py-16 sm:py-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative bg-white/5 backdrop-blur-lg rounded-3xl p-6 sm:p-12 shadow-2xl">
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-xl ring-4 ring-blue-500/20">
-              <Scroll className="w-8 h-8 text-white" />
-            </div>
-          </div>
-          
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
             {/* Portrait Section */}
             <div className="lg:col-span-2 max-w-sm mx-auto lg:max-w-none">

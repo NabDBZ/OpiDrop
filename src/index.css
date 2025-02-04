@@ -21,16 +21,42 @@
 /* Glass effect utilities */
 @layer components {
   .glass-card {
-    @apply backdrop-blur-sm bg-white/5 rounded-xl border border-white/10 shadow-lg animate-gpu;
-    transform: translate3d(0, 0, 0);
+    @apply relative;
+    background: rgba(255, 255, 255, 0.05);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .glass-button {
-    @apply backdrop-blur-sm bg-blue-600/20 text-white border border-white/10 transition-gpu;
+    @apply relative;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .glass-input {
-    @apply backdrop-blur-sm bg-white/5 border border-white/10 text-white;
+    @apply relative;
+    background: rgba(20, 20, 20, 0.2);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Fix for iOS transparency issues */
+  @supports (-webkit-touch-callout: none) {
+    .glass-card {
+      background: rgba(30, 30, 30, 0.8);
+    }
+    
+    .glass-button {
+      background: rgba(40, 40, 40, 0.8);
+    }
+    
+    .glass-input {
+      background: rgba(20, 20, 20, 0.8);
+    }
   }
 }
 
@@ -76,4 +102,47 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Base styles for better mobile experience */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Improve input appearance on iOS */
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 8px;
+}
+
+/* Fix for iOS input zoom */
+@media screen and (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Custom scrollbar for better mobile experience */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* Prevent pull-to-refresh on mobile */
+body {
+  overscroll-behavior-y: none;
 }

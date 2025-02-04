@@ -6,6 +6,7 @@ import { DrugSymbol } from './DrugSymbol';
 import { generatePDF } from '../utils/pdfExport';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-hot-toast';
+import { saveToLocalStorage, loadFromLocalStorage, STORAGE_KEYS } from '../utils/localStorage';
 
 type CalendarProps = {
   selectedDrugs: (DrugType & {
@@ -167,8 +168,15 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
   const calendarRef = useRef<HTMLDivElement>(null);
   const [isExporting, setIsExporting] = useState(false);
   const [selectionStart, setSelectionStart] = useState<Date | null>(null);
-  const [completedDoses, setCompletedDoses] = useState<DoseStatus[]>([]);
+  const [completedDoses, setCompletedDoses] = useState<DoseStatus[]>(() =>
+    loadFromLocalStorage<DoseStatus[]>(STORAGE_KEYS.COMPLETED_DOSES, [])
+  );
   const [hoveredCell, setHoveredCell] = useState<{ drugId: string; date: string; timeIndex: number } | null>(null);
+
+  // Save completed doses to localStorage whenever they change
+  useEffect(() => {
+    saveToLocalStorage(STORAGE_KEYS.COMPLETED_DOSES, completedDoses);
+  }, [completedDoses]);
 
   const timeSlots = useMemo(() => {
     const allSlots = new Set<number>();
@@ -308,9 +316,6 @@ export function Calendar({ selectedDrugs, startDate, onStartDateChange }: Calend
             <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
               {format(weekStart, 'MMM d')} - {format(weekEnd, 'MMM d, yyyy')}
             </h2>
-            <p className="text-xs sm:text-sm text-gray-600">
-              {t('calendar.treatmentStart')}: {selectionStart ? format(selectionStart, 'MMM d, yyyy') : t('calendar.notSet')}
-            </p>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4 print:hidden">
             <button

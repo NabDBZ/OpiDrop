@@ -410,5 +410,127 @@
     "resultsFound": "{{count}} {{medication}} trouvé(s)",
     "medication": "médicament",
     "medications": "médicaments"
+  },
+  "termsOfService": {
+    "title": "Conditions d'Utilisation",
+    "lastUpdated": "Dernière Mise à Jour",
+    "effectiveDate": "Date d'Entrée en Vigueur",
+    "agree": "Bienvenue sur OptiDrop (le \"Site Web\"), accessible à l'adresse https://optidrop.vercel.app. Ces Conditions d'Utilisation (\"Conditions\") régissent votre accès et votre utilisation d'OptiDrop (le \"Service\"). Veuillez lire attentivement ces Conditions avant d'utiliser notre site web.",
+    "disagree": "En accédant ou en utilisant OptiDrop, vous acceptez d'être lié par ces Conditions. Si vous n'acceptez pas une partie de ces Conditions, vous devez cesser immédiatement toute utilisation.",
+    "sections": {
+      "description": {
+        "title": "Description du Service",
+        "content": "OptiDrop est un outil d'information et d'assistance conçu pour aider les pharmaciens et les professionnels de santé à gérer les traitements ophtalmiques, y compris les calendriers d'administration des gouttes oculaires. Le Service est fourni gratuitement et se veut un outil de commodité plutôt qu'un remplacement du jugement professionnel.",
+        "disclaimers": {
+          "title": "OptiDrop NE fournit PAS :",
+          "items": [
+            "De conseils médicaux, de diagnostics ou de traitements.",
+            "De remplacement au jugement professionnel des prestataires de soins de santé.",
+            "De garantie quant à l'exactitude ou l'exhaustivité des informations médicales fournies."
+          ]
+        },
+        "discretion": "L'utilisation d'OptiDrop est entièrement à la discrétion de l'utilisateur, et toutes les décisions médicales doivent être prises sous la supervision d'un professionnel de santé qualifié."
+      },
+      "eligibility": {
+        "title": "Éligibilité",
+        "content": "En utilisant OptiDrop, vous confirmez que vous :",
+        "requirements": [
+          "Avez au moins 18 ans ou avez obtenu le consentement parental/du tuteur légal si vous avez moins de 18 ans.",
+          "Êtes un professionnel de santé, un patient ou un individu utilisant le service uniquement à des fins d'information.",
+          "N'utiliserez pas le site web à des fins illégales, contraires à l'éthique ou non autorisées."
+        ]
+      },
+      "medicalDisclaimer": {
+        "title": "Avertissement Médical",
+        "content": "Les informations fournies par OptiDrop sont uniquement à des fins éducatives et informatives et ne doivent pas être interprétées comme un avis médical.",
+        "acknowledgments": {
+          "title": "En utilisant ce site web, vous reconnaissez que :",
+          "items": [
+            "OptiDrop ne crée pas de relation médecin-patient.",
+            "L'outil ne remplace pas une consultation avec un professionnel de santé qualifié.",
+            "Vous devez toujours consulter un médecin, un pharmacien ou un autre professionnel agréé avant de prendre des décisions de santé.",
+            "OptiDrop n'assume aucune responsabilité pour les décisions prises sur la base des informations fournies par l'outil."
+          ]
+        }
+      },
+      "userResponsibilities": {
+        "title": "Responsabilités de l'Utilisateur",
+        "content": "Vous acceptez de :",
+        "responsibilities": [
+          "N'utiliser OptiDrop qu'à des fins légales et éthiques.",
+          "Ne pas détourner, modifier ou tenter de pirater le site web ou ses fonctionnalités.",
+          "Ne pas utiliser le service pour diffuser des informations fausses, trompeuses ou nuisibles.",
+          "Comprendre que tous les calendriers ou recommandations automatisés fournis sont basés sur des informations médicales générales et peuvent ne pas s'appliquer à des cas spécifiques."
+        ],
+        "professional": "Si vous utilisez OptiDrop à des fins professionnelles, vous acceptez l'entière responsabilité de vérifier toute information avant son application dans un contexte clinique."
+      },
+      "intellectualProperty": {
+        "title": "Droits de Propriété Intellectuelle",
+        "content": "Tout le contenu, les logiciels, la conception et les fonctionnalités d'OptiDrop, y compris mais sans s'y limiter les logos, images et textes, appartiennent au créateur d'OptiDrop ou sont utilisés avec autorisation.",
+        "prohibited": {
+          "title": "Vous NE pouvez PAS :",
+          "items": [
+            "Copier, reproduire, distribuer ou modifier une partie du site web sans autorisation explicite.",
+            "Utiliser une partie du site web à des fins commerciales sans autorisation."
+          ]
+        },
+        "permitted": {
+          "title": "Vous POUVEZ :",
+          "items": [
+            "Partager le site web avec des collègues, des patients ou des publics pertinents tant qu'il n'est pas modifié ou déformé."
+          ]
+        }
+      },
+      "privacy": {
+        "title": "Confidentialité et Protection des Données",
+        "content": "OptiDrop ne collecte, ne stocke ni ne vend d'informations de santé personnelles (ISP). Cependant, en utilisant le service, vous reconnaissez que :",
+        "acknowledgments": [
+          "Certaines données techniques non identifiables (par exemple, les analyses de trafic du site web) peuvent être collectées pour le suivi des performances.",
+          "Si un formulaire de contact est mis en place, les informations fournies par l'utilisateur peuvent être stockées uniquement pour les demandes de service client et ne seront pas partagées ni vendues.",
+          "OptiDrop se conforme au RGPD, à HIPAA et aux autres lois sur la protection de la vie privée applicables."
+        ],
+        "note": "Pour plus de détails, veuillez consulter notre Politique de Confidentialité (si disponible)."
+      },
+      "liability": {
+        "title": "Limitation de Responsabilité",
+        "content": "Dans toute la mesure permise par la loi, OptiDrop, ses développeurs et affiliés ne sont pas responsables :",
+        "limitations": [
+          "De tout préjudice, blessure ou conséquence médicale résultant de la confiance accordée au contenu du site web.",
+          "Des erreurs, inexactitudes ou informations obsolètes présentées.",
+          "De la perte de données ou des défaillances logicielles liées à l'utilisation du service.",
+          "Des liens tiers ou des ressources externes que le site web peut référencer."
+        ],
+        "responsibility": "Les utilisateurs assument l'entière responsabilité de la vérification de toute information avant son utilisation dans un contexte clinique."
+      },
+      "availability": {
+        "title": "Disponibilité et Modifications du Service",
+        "content": "OptiDrop est fourni tel quel, et nous ne garantissons pas un service ininterrompu ou sans erreur.",
+        "modifications": [
+          "Nous pouvons mettre à jour, modifier ou interrompre le site web à tout moment sans préavis.",
+          "Si des changements majeurs affectent les fonctionnalités principales, nous tenterons d'en informer les utilisateurs à l'avance."
+        ]
+      },
+      "thirdParty": {
+        "title": "Liens et Contenu Externes",
+        "content": "OptiDrop peut contenir des liens vers des sites Web tiers pour des informations supplémentaires.",
+        "disclaimers": [
+          "Nous ne cautionnons pas, ne contrôlons pas et ne garantissons pas l'exactitude des sites externes.",
+          "Toute confiance accordée au contenu tiers est à vos propres risques."
+        ]
+      },
+      "governing": {
+        "title": "Loi Applicable et Juridiction",
+        "content": "Ces Conditions d'Utilisation sont régies par les lois de la France, sans égard aux principes de conflits de lois.",
+        "dispute": "En cas de litige, vous acceptez de résoudre les différends par médiation ou arbitrage à Paris, France, sauf disposition contraire de la loi."
+      },
+      "changes": {
+        "title": "Modifications des Conditions",
+        "content": "Nous nous réservons le droit de mettre à jour ou de modifier ces Conditions à tout moment.",
+        "notes": [
+          "La poursuite de l'utilisation d'OptiDrop après les modifications indique l'acceptation des nouvelles Conditions.",
+          "Nous encourageons les utilisateurs à consulter régulièrement cette page pour les mises à jour."
+        ]
+      }
+    }
   }
 }
