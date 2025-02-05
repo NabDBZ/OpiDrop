@@ -5,10 +5,10 @@ import { Info, Check } from 'lucide-react';
 import { drugColors } from '../data/drugTypes';
 
 type DrugLegendProps = {
-  selectedCategories: string[];
+  selectedCategories?: string[];
 };
 
-export function DrugLegend({ selectedCategories }: DrugLegendProps) {
+export function DrugLegend({ selectedCategories = [] }: DrugLegendProps) {
   const { t } = useTranslation();
 
   const symbols = [
