@@ -22,48 +22,54 @@
 @layer components {
   .glass-card {
     @apply relative;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.1);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .glass-button {
     @apply relative;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
   .glass-input {
     @apply relative;
-    background: rgba(20, 20, 20, 0.2);
+    background: rgba(255, 255, 255, 0.05);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  /* Fix for iOS transparency and backdrop-filter issues */
-  @supports (-webkit-touch-callout: none) {
-    .glass-card {
-      background: rgba(30, 30, 30, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    
-    .glass-button {
-      background: rgba(40, 40, 40, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    
-    .glass-input {
-      background: rgba(20, 20, 20, 0.95);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
+    border: 1px solid rgba(255, 255, 255, 0.15);
   }
 }
 
-/* Optimized animations */
+/* iOS-specific glass effects */
+@supports (-webkit-touch-callout: none) {
+  .glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  
+  .glass-button {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  
+  .glass-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+
+/* Animation keyframes */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -107,12 +113,11 @@
   }
 }
 
-/* Base styles for better mobile experience */
+/* Base styles */
 html {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* Prevent iOS text size adjust after orientation change */
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   height: 100%;
@@ -124,31 +129,49 @@ body {
   position: relative;
 }
 
-/* Improve input appearance on iOS */
+/* Mobile optimizations */
+@media screen and (max-width: 640px) {
+  .glass-card {
+    padding: 1rem;
+  }
+  
+  [data-category] {
+    min-height: 120px;
+  }
+  
+  .text-\[8px\], 
+  .text-\[10px\] {
+    font-size: 0.75rem;
+    line-height: 1.25;
+  }
+}
+
+/* Input styles */
 input,
 select,
 textarea {
   -webkit-appearance: none;
   appearance: none;
   border-radius: 8px;
-  /* Prevent iOS shadow and rounded corners */
   box-shadow: none;
 }
 
-/* Fix for iOS input zoom and keyboard issues */
+/* Mobile input adjustments */
 @media screen and (max-width: 768px) {
-  input, select, textarea {
-    font-size: 16px !important;
-    min-height: 44px; /* iOS minimum touch target size */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px;
+    min-height: 44px;
   }
   
   button {
-    min-height: 44px; /* iOS minimum touch target size */
+    min-height: 44px;
     padding: 0.5rem 1rem;
   }
 }
 
-/* Custom scrollbar for better mobile experience */
+/* Scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -163,26 +186,22 @@ textarea {
   border-radius: 4px;
 }
 
-/* iOS-specific fixes */
+/* iOS fixes */
 @supports (-webkit-touch-callout: none) {
-  /* Fix for iOS momentum scrolling */
   body {
     -webkit-overflow-scrolling: touch;
   }
   
-  /* Fix for iOS sticky positioning */
   .sticky {
     position: -webkit-sticky;
     position: sticky;
   }
   
-  /* Fix for iOS 100vh issue */
   .h-screen {
     height: 100vh;
     height: -webkit-fill-available;
   }
 
-  /* Ensure proper touch scrolling */
   .overflow-scroll {
     -webkit-overflow-scrolling: touch;
   }
