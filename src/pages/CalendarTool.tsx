@@ -38,6 +38,7 @@ export default function CalendarTool() {
     loadFromLocalStorage<Record<string, string>>(STORAGE_KEYS.SELECTED_SCHEDULES, {})
   );
   const [isCalendarGenerated, setIsCalendarGenerated] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Save data to localStorage whenever it changes
   useEffect(() => {
@@ -146,12 +147,25 @@ export default function CalendarTool() {
     setStartDate(newDate);
   };
 
-  const handleGenerateCalendar = () => {
+  const handleGenerateCalendar = async () => {
     if (dateError) {
       return;
     }
     const selectedDate = new Date(selectedStartDate + 'T00:00:00');
     setStartDate(selectedDate);
+    setIsGenerating(true);
+    try {
+      await generateCalendar();
+    } catch (error) {
+      console.error('Error generating calendar:', error);
+      setDateError(t('calendar.errors.generationError'));
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const generateCalendar = async () => {
+    // Implementation of generateCalendar function
     setIsCalendarGenerated(true);
   };
 
@@ -437,13 +451,31 @@ export default function CalendarTool() {
                     </div>
                     <button
                       onClick={handleGenerateCalendar}
-                      className={`glass-button w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center justify-center ${
-                        dateError ? 'opacity-50 cursor-not-allowed' : ''
-                      }`}
-                      disabled={!!dateError}
+                      className={`glass-button w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                        dateError ? 'opacity-50 cursor-not-allowed' : 
+                        isCalendarGenerated ? 'bg-green-500/20 hover:bg-green-500/30' :
+                        isGenerating ? 'bg-blue-500/20' : 'hover:bg-white/10'
+                      } group`}
+                      disabled={!!dateError || isGenerating}
                     >
-                      <CalendarIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2" />
-                      <span className="text-sm sm:text-base">{t('calendar.generateCalendar')}</span>
+                      {isGenerating ? (
+                        <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 animate-spin" />
+                      ) : isCalendarGenerated ? (
+                        <>
+                          <Check className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-green-400 group-hover:hidden" />
+                          <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 hidden group-hover:block" />
+                        </>
+                      ) : (
+                        <CalendarIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2" />
+                      )}
+                      <span className="text-sm sm:text-base">
+                        {isGenerating 
+                          ? "Generating..."
+                          : isCalendarGenerated 
+                            ? "Update Calendar"
+                            : "Generate Calendar"
+                        }
+                      </span>
                     </button>
                   </div>
                 </div>
