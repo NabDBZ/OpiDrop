@@ -16,12 +16,6 @@ export function Footer() {
           </div>
           <nav className="flex flex-wrap justify-center gap-4 sm:gap-6">
             <Link 
-              to="/privacy-policy" 
-              className="text-sm sm:text-base text-white/70 hover:text-white transition-colors"
-            >
-              {t('common.privacyPolicy')}
-            </Link>
-            <Link 
               to="/terms-of-service" 
               className="text-sm sm:text-base text-white/70 hover:text-white transition-colors"
             >

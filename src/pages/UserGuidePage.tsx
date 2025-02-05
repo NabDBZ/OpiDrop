@@ -27,6 +27,7 @@ export function UserGuidePage() {
   const [isSimulating, setIsSimulating] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [isMobileView, setIsMobileView] = useState(false);
+  const [showCompletionMessage, setShowCompletionMessage] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -165,15 +166,26 @@ export function UserGuidePage() {
 
   const handleStepComplete = (stepId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    setProgress(prev => ({
-      ...prev,
+    const newProgress = {
+      ...progress,
       [stepId]: true
-    }));
+    };
+    setProgress(newProgress);
     
-    // Move to next step automatically
-    const currentIndex = steps.findIndex(step => step.id === expandedStep);
-    if (currentIndex < steps.length - 1) {
-      setExpandedStep(steps[currentIndex + 1].id);
+    // Check if this was the last step
+    const isLastStep = stepId === steps[steps.length - 1].id;
+    const allCompleted = steps.every(step => newProgress[step.id]);
+    
+    if (isLastStep && allCompleted) {
+      setShowCompletionMessage(true);
+      // Hide message after 5 seconds
+      setTimeout(() => setShowCompletionMessage(false), 5000);
+    } else {
+      // Move to next step automatically
+      const currentIndex = steps.findIndex(step => step.id === expandedStep);
+      if (currentIndex < steps.length - 1) {
+        setExpandedStep(steps[currentIndex + 1].id);
+      }
     }
   };
 
@@ -217,6 +229,16 @@ export function UserGuidePage() {
   return (
     <div className="min-h-screen">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-12">
+        {/* Success Message */}
+        {showCompletionMessage && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+            <div className="glass-card bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+              <CheckCircle className="h-5 w-5" />
+              <span className="font-medium">Congratulations! You've completed the guide!</span>
+            </div>
+          </div>
+        )}
+        
         {/* Header Section */}
         <div className="glass-card p-4 sm:p-8 mb-6">
           <div className="flex justify-between items-center mb-6">

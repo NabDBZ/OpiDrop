@@ -41,10 +41,9 @@ export function LegalDisclaimer() {
                 <AlertTriangle className="w-6 h-6 text-amber-400" />
               </div>
             </div>
-            
             <div className="flex-1">
               <div className="flex items-start justify-between">
-                <h3 className="text-lg font-semibold text-white mb-2">Medical Disclaimer</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Medical Disclaimer / Avertissement Médical</h3>
                 <button
                   onClick={handleDismiss}
                   className="glass-button p-1 rounded-lg hover:bg-white/10"
@@ -54,29 +53,51 @@ export function LegalDisclaimer() {
               </div>
               
               <div className="prose prose-invert max-w-none">
-                <p className="text-white/90 mb-4">
-                  The Eye Drops Calendar Tool is intended for <strong>informational purposes only</strong>. 
-                  This tool does <strong>not replace professional medical advice, diagnosis, or treatment</strong>. 
-                  Users should consult a <strong>qualified healthcare professional</strong> for any medical 
-                  concerns or decisions regarding their eye drop regimen.
-                </p>
-                <p className="text-white/90 mb-4">
-                  The developer(s) of this website, including <strong>Nabil Naas Araba and MDose AI</strong>, 
-                  <strong> assume no liability</strong> for any misuse, incorrect application of information, 
-                  or medical outcomes resulting from reliance on this tool.
-                </p>
-                <p className="text-white/90">
-                  For urgent medical concerns, please contact a <strong>medical professional or emergency 
-                  services</strong> immediately.
-                </p>
-              </div>
+                {/* English Version */}
+                <div className="mb-6">
+                  <p className="text-white/90 mb-4">
+                    The Eye Drops Calendar Tool is intended for <strong>informational purposes only</strong>. 
+                    This tool does <strong>not replace professional medical advice, diagnosis, or treatment</strong>. 
+                    Users should consult a <strong>qualified healthcare professional</strong> for any medical 
+                    concerns or decisions regarding their eye drop regimen.
+                  </p>
+                  <p className="text-white/90 mb-4">
+                    The developer(s) of this website, including <strong>Nabil Naas Araba and MDose AI</strong>, 
+                    <strong> assume no liability</strong> for any misuse, incorrect application of information, 
+                    or medical outcomes resulting from reliance on this tool.
+                  </p>
+                  <p className="text-white/90">
+                    For urgent medical concerns, please contact a <strong>medical professional or emergency 
+                    services</strong> immediately.
+                  </p>
+                </div>
 
+                {/* French Version */}
+                <div className="pt-6 border-t border-white/10">
+                  <p className="text-white/90 mb-4">
+                    L'Outil de Calendrier des Gouttes Oculaires est destiné <strong>uniquement à des fins informatives</strong>. 
+                    Cet outil <strong>ne remplace pas les conseils médicaux professionnels, le diagnostic ou le traitement</strong>. 
+                    Les utilisateurs doivent consulter un <strong>professionnel de santé qualifié</strong> pour toute 
+                    préoccupation médicale ou décision concernant leur traitement par gouttes oculaires.
+                  </p>
+                  <p className="text-white/90 mb-4">
+                    Le(s) développeur(s) de ce site web, y compris <strong>Nabil Naas Araba et MDose AI</strong>, 
+                    <strong> n'assument aucune responsabilité</strong> pour toute mauvaise utilisation, application incorrecte 
+                    des informations ou résultats médicaux découlant de l'utilisation de cet outil.
+                  </p>
+                  <p className="text-white/90">
+                    Pour toute urgence médicale, veuillez contacter immédiatement un <strong>professionnel de 
+                    santé ou les services d'urgence</strong>.
+                  </p>
+                </div>
+              </div>
+              
               <div className="mt-6 flex items-center justify-end space-x-4">
                 <button
                   onClick={handleDismiss}
                   className="glass-button px-6 py-2 rounded-lg bg-amber-600/20 hover:bg-amber-500/30"
                 >
-                  I Understand
+                  I Understand / Je Comprends
                 </button>
               </div>
             </div>
