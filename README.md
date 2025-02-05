@@ -11,7 +11,13 @@ OptiDrop is a modern, user-friendly web application designed to help patients ma
 - 🔔 Progress tracking
 - 💾 Local data persistence
 - 🖨️ PDF export functionality
-- 🌍 Internationalization support
+- 🌍 Internationalization support (English & French)
+- 🔍 Comprehensive drug database including:
+  - Prostaglandin analogues
+  - Beta blockers
+  - Carbonic anhydrase inhibitors
+  - Alpha agonists
+  - And more...
 
 ## Getting Started
 
@@ -53,6 +59,13 @@ yarn dev
 - date-fns
 - i18next
 - React Router
+
+## Recent Updates
+
+- Added comprehensive prostaglandin analogues database
+- Improved French translation layout in drug legend
+- Enhanced mobile responsiveness
+- Added Vercel deployment configuration
 
 ## Contributing
 
