@@ -7,6 +7,16 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  server: {
+    hmr: {
+      overlay: false
+    }
+  },
+  preview: {
+    port: 4173,
+    host: true,
+    strictPort: true
+  },
   build: {
     target: 'esnext',
     minify: 'terser',
@@ -30,11 +40,6 @@ export default defineConfig({
           ]
         }
       }
-    }
-  },
-  server: {
-    hmr: {
-      overlay: false
     }
   }
 });
