@@ -6,7 +6,8 @@ const STORAGE_KEYS = {
   TREATMENT_DURATIONS: 'mdose_treatment_durations',
   SELECTED_SCHEDULES: 'mdose_selected_schedules',
   COMPLETED_DOSES: 'mdose_completed_doses',
-  START_DATE: 'mdose_start_date'
+  START_DATE: 'mdose_start_date',
+  DRUG_START_DATES: 'mdose_drug_start_dates'
 } as const;
 
 export const saveToLocalStorage = <T>(key: string, data: T): void => {

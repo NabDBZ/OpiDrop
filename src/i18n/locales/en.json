@@ -176,6 +176,10 @@
     "title": "Eye Drop Schedule",
     "allCategories": "All Categories",
     "searchPlaceholder": "Search by medication or brand name...",
+    "drugConfiguration": "Drug Configuration",
+    "startDate": "Start Date",
+    "schedule": "Schedule",
+    "duration": "Duration",
     "schedules": {
       "once": "Once Daily (DIE)",
       "twice": "Twice Daily (BID)",

@@ -26,6 +26,9 @@ export default function CalendarTool() {
   });
   const [selectedStartDate, setSelectedStartDate] = useState(startDate.toISOString().split('T')[0]);
   const [dateError, setDateError] = useState<string | null>(null);
+  const [drugStartDates, setDrugStartDates] = useState(() => 
+    loadFromLocalStorage<Record<string, string>>(STORAGE_KEYS.DRUG_START_DATES, {})
+  );
   const [customSchedules, setCustomSchedules] = useState(() => 
     loadFromLocalStorage<Record<string, { frequency: number; interval: number; startTime: string }>>(
       STORAGE_KEYS.CUSTOM_SCHEDULES, 
@@ -61,6 +64,10 @@ export default function CalendarTool() {
   useEffect(() => {
     saveToLocalStorage(STORAGE_KEYS.START_DATE, startDate.toISOString());
   }, [startDate]);
+
+  useEffect(() => {
+    saveToLocalStorage(STORAGE_KEYS.DRUG_START_DATES, drugStartDates);
+  }, [drugStartDates]);
 
   const scheduleOptions = [
     { value: 'once', label: t('calendar.schedules.once') },
@@ -148,6 +155,28 @@ export default function CalendarTool() {
     setStartDate(newDate);
   };
 
+  const handleDrugStartDateChange = (drugId: string, date: string) => {
+    const newDate = new Date(date + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (isNaN(newDate.getTime())) {
+      setDateError(t('calendar.errors.invalidDate'));
+      return;
+    }
+
+    if (newDate < today) {
+      setDateError(t('calendar.errors.pastDate'));
+      return;
+    }
+
+    setDateError(null);
+    setDrugStartDates(prev => ({
+      ...prev,
+      [drugId]: date
+    }));
+  };
+
   const handleGenerateCalendar = async () => {
     if (dateError) {
       return;
@@ -216,7 +245,11 @@ export default function CalendarTool() {
   };
 
   const sequencedDrugsWithNumbers = useMemo(() => {
-    const sequencedDrugs = calculateDrugSequence(selectedDrugs);
+    const drugsWithStartDates = selectedDrugs.map(drug => ({
+      ...drug,
+      startDate: drugStartDates[drug.id] || selectedStartDate
+    }));
+    const sequencedDrugs = calculateDrugSequence(drugsWithStartDates);
     return sequencedDrugs.map((drug, index) => ({
       ...drug,
       posology: selectedSchedules[drug.id] || drug.standardPosology,
@@ -224,7 +257,7 @@ export default function CalendarTool() {
       sequenceNumber: index + 1,
       customSchedule: customSchedules[drug.id]
     }));
-  }, [selectedDrugs, customSchedules, treatmentDurations, selectedSchedules]);
+  }, [selectedDrugs, customSchedules, treatmentDurations, selectedSchedules, drugStartDates, selectedStartDate]);
 
   return (
     <div className="min-h-screen">
@@ -514,52 +547,50 @@ export default function CalendarTool() {
 
         {selectedDrugs.length > 0 && (
           <>
-            <div className="glass-card mb-6 sm:mb-8">
-              <div className="p-3 sm:p-4 md:p-6">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-                  <h2 className="text-lg sm:text-xl font-semibold text-white">
+            <div className="glass-card mb-4 sm:mb-6">
+              <div className="p-2 sm:p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 sm:mb-4 space-y-2 sm:space-y-0">
+                  <h2 className="text-base sm:text-lg font-semibold text-white">
                     {t('calendar.selectedMedications')}
                   </h2>
-                  <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-4">
-                    <div className="relative flex flex-col">
-                      <div className="relative">
-                        <CalendarIcon className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-white/60" />
-                        <input
-                          type="date"
-                          value={selectedStartDate}
-                          onChange={handleStartDateChange}
-                          className={`glass-input w-full pl-8 sm:pl-10 pr-2 sm:pr-4 py-1.5 sm:py-2 rounded-lg focus:outline-none focus:ring-2 ${
-                            dateError ? 'ring-2 ring-red-500/50' : 'focus:ring-blue-500/50'
-                          } text-white text-sm`}
-                          min={new Date().toISOString().split('T')[0]}
-                        />
-                      </div>
+                  <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
+                    <div className="relative">
+                      <CalendarIcon className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/60" />
+                      <input
+                        type="date"
+                        value={selectedStartDate}
+                        onChange={handleStartDateChange}
+                        className={`glass-input w-full pl-8 pr-2 py-1.5 text-sm rounded-lg focus:outline-none focus:ring-2 ${
+                          dateError ? 'ring-2 ring-red-500/50' : 'focus:ring-blue-500/50'
+                        } text-white`}
+                        min={new Date().toISOString().split('T')[0]}
+                      />
                       {dateError && (
-                        <div className="absolute -bottom-5 left-0 text-xs sm:text-sm text-red-400">
+                        <div className="absolute -bottom-5 left-0 text-xs text-red-400">
                           {dateError}
                         </div>
                       )}
                     </div>
                     <button
                       onClick={handleGenerateCalendar}
-                      className={`glass-button w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                      className={`glass-button px-3 py-1.5 rounded-lg flex items-center justify-center transition-all duration-200 ${
                         dateError ? 'opacity-50 cursor-not-allowed' : 
                         isCalendarGenerated ? 'bg-green-500/20 hover:bg-green-500/30' :
                         isGenerating ? 'bg-blue-500/20' : 'hover:bg-white/10'
-                      } group`}
+                      } group text-sm`}
                       disabled={!!dateError || isGenerating}
                     >
                       {isGenerating ? (
-                        <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 animate-spin" />
+                        <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
                       ) : isCalendarGenerated ? (
                         <>
-                          <Check className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-green-400 group-hover:hidden" />
-                          <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 hidden group-hover:block" />
+                          <Check className="h-4 w-4 mr-1.5 text-green-400 group-hover:hidden" />
+                          <RefreshCw className="h-4 w-4 mr-1.5 hidden group-hover:block" />
                         </>
                       ) : (
-                        <CalendarIcon className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2" />
+                        <CalendarIcon className="h-4 w-4 mr-1.5" />
                       )}
-                      <span className="text-sm sm:text-base">
+                      <span>
                         {isGenerating 
                           ? "Generating..."
                           : isCalendarGenerated 
@@ -571,114 +602,128 @@ export default function CalendarTool() {
                   </div>
                 </div>
 
-                <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                  {selectedDrugs.map(drug => {
+                <div className="space-y-3 sm:space-y-4">
+                  {sequencedDrugsWithNumbers.map(drug => {
                     const colors = drugColors[drug.effect];
                     const hasCustomSchedule = customSchedules[drug.id];
                     const currentSchedule = selectedSchedules[drug.id] || drug.standardPosology;
                     
                     return (
-                      <div
-                        key={drug.id}
-                        className="glass-card p-3 sm:p-4 md:p-6"
-                      >
-                        <div className="flex items-start space-x-2 sm:space-x-3">
-                          <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center ${colors.bg}`}>
-                            <DrugSymbol symbol={drug.symbol} className="text-lg sm:text-xl" />
+                      <div key={drug.id} className="p-3 sm:p-4 rounded-lg bg-white/5">
+                        {/* Drug Header - More compact on mobile */}
+                        <div className="flex items-center gap-2 sm:gap-4 mb-3 sm:mb-4">
+                          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center ${colors.bg}`}>
+                            <DrugSymbol symbol={drug.symbol} className="text-base sm:text-lg" />
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <h3 className="text-base sm:text-lg font-medium text-white truncate">
-                              {drug.name}
-                            </h3>
+                          <div className="min-w-0 flex-1">
+                            <h4 className="font-medium text-white text-sm sm:text-base truncate">{drug.name}</h4>
                             {drug.brandName && (
                               <p className="text-xs sm:text-sm text-white/60 truncate">{drug.brandName}</p>
                             )}
-                            
-                            <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4">
-                              <div>
-                                <label className="block text-xs sm:text-sm font-medium text-white mb-1">
-                                  Schedule Type
-                                </label>
-                                <select
-                                  value={currentSchedule}
-                                  onChange={(e) => handleScheduleChange(drug.id, e.target.value)}
-                                  className="glass-input w-full px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm"
-                                >
-                                  {scheduleOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                      {option.label}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-
-                              <div>
-                                <label className="block text-xs sm:text-sm font-medium text-white mb-1">
-                                  Treatment Duration
-                                </label>
-                                <select
-                                  value={treatmentDurations[drug.id] || 14}
-                                  onChange={(e) => handleDurationChange(drug.id, Number(e.target.value))}
-                                  className="glass-input w-full px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm"
-                                >
-                                  {durationOptions.map(option => (
-                                    <option key={option.value} value={option.value}>
-                                      {option.label}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-
-                              {hasCustomSchedule && (
-                                <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-4 glass-card p-2 sm:p-3">
-                                  <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-white mb-1">
-                                      Daily Frequency
-                                    </label>
-                                    <input
-                                      type="number"
-                                      min="1"
-                                      max="12"
-                                      value={customSchedules[drug.id].frequency}
-                                      onChange={(e) => handleCustomScheduleChange(drug.id, {
-                                        frequency: parseInt(e.target.value)
-                                      })}
-                                      className="glass-input w-full px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm"
-                                    />
-                                  </div>
-                                  <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-white mb-1">
-                                      Hours Between Doses
-                                    </label>
-                                    <input
-                                      type="number"
-                                      min="1"
-                                      max="24"
-                                      value={customSchedules[drug.id].interval}
-                                      onChange={(e) => handleCustomScheduleChange(drug.id, {
-                                        interval: parseInt(e.target.value)
-                                      })}
-                                      className="glass-input w-full px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm"
-                                    />
-                                  </div>
-                                  <div>
-                                    <label className="block text-xs sm:text-sm font-medium text-white mb-1">
-                                      First Dose Time
-                                    </label>
-                                    <input
-                                      type="time"
-                                      value={customSchedules[drug.id].startTime}
-                                      onChange={(e) => handleCustomScheduleChange(drug.id, {
-                                        startTime: e.target.value
-                                      })}
-                                      className="glass-input w-full px-2 sm:px-3 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm"
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </div>
                           </div>
                         </div>
+
+                        {/* Main Configuration Grid - Stack on mobile */}
+                        <div className="space-y-3 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4">
+                          {/* Start Date Input */}
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-white/80 mb-1">
+                              {t('calendar.startDate')}
+                            </label>
+                            <input
+                              type="date"
+                              value={drugStartDates[drug.id] || selectedStartDate}
+                              onChange={(e) => handleDrugStartDateChange(drug.id, e.target.value)}
+                              min={new Date().toISOString().split('T')[0]}
+                              className="glass-input w-full text-sm py-1.5"
+                            />
+                          </div>
+
+                          {/* Schedule Selection */}
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-white/80 mb-1">
+                              {t('calendar.schedule')}
+                            </label>
+                            <select
+                              value={currentSchedule}
+                              onChange={(e) => handleScheduleChange(drug.id, e.target.value)}
+                              className="glass-input w-full text-sm py-1.5"
+                            >
+                              {scheduleOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+
+                          {/* Duration Selection */}
+                          <div>
+                            <label className="block text-xs sm:text-sm font-medium text-white/80 mb-1">
+                              {t('calendar.duration')}
+                            </label>
+                            <select
+                              value={treatmentDurations[drug.id] || 14}
+                              onChange={(e) => handleDurationChange(drug.id, parseInt(e.target.value))}
+                              className="glass-input w-full text-sm py-1.5"
+                            >
+                              {durationOptions.map(option => (
+                                <option key={option.value} value={option.value}>
+                                  {option.label}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Custom Schedule Options - Stack on mobile */}
+                        {hasCustomSchedule && (
+                          <div className="mt-3 sm:mt-4 space-y-3 sm:space-y-0 sm:grid sm:grid-cols-3 sm:gap-4">
+                            <div>
+                              <label className="block text-xs sm:text-sm font-medium text-white/80 mb-1">
+                                {t('calendar.customSchedule.dailyFrequency')}
+                              </label>
+                              <input
+                                type="number"
+                                min="1"
+                                max="12"
+                                value={customSchedules[drug.id].frequency}
+                                onChange={(e) => handleCustomScheduleChange(drug.id, {
+                                  frequency: parseInt(e.target.value)
+                                })}
+                                className="glass-input w-full text-sm py-1.5"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs sm:text-sm font-medium text-white/80 mb-1">
+                                {t('calendar.customSchedule.hoursBetweenDoses')}
+                              </label>
+                              <input
+                                type="number"
+                                min="1"
+                                max="24"
+                                value={customSchedules[drug.id].interval}
+                                onChange={(e) => handleCustomScheduleChange(drug.id, {
+                                  interval: parseInt(e.target.value)
+                                })}
+                                className="glass-input w-full text-sm py-1.5"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs sm:text-sm font-medium text-white/80 mb-1">
+                                {t('calendar.customSchedule.firstDoseTime')}
+                              </label>
+                              <input
+                                type="time"
+                                value={customSchedules[drug.id].startTime}
+                                onChange={(e) => handleCustomScheduleChange(drug.id, {
+                                  startTime: e.target.value
+                                })}
+                                className="glass-input w-full text-sm py-1.5"
+                              />
+                            </div>
+                          </div>
+                        )}
                       </div>
                     );
                   })}
@@ -686,7 +731,7 @@ export default function CalendarTool() {
               </div>
             </div>
 
-            <div className="space-y-6 sm:space-y-8">
+            <div className="space-y-4 sm:space-y-6">
               {isCalendarGenerated && (
                 <>
                   <Calendar
