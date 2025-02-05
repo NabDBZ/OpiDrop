@@ -44,18 +44,21 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* Fix for iOS transparency issues */
+  /* Fix for iOS transparency and backdrop-filter issues */
   @supports (-webkit-touch-callout: none) {
     .glass-card {
-      background: rgba(30, 30, 30, 0.8);
+      background: rgba(30, 30, 30, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
     
     .glass-button {
-      background: rgba(40, 40, 40, 0.8);
+      background: rgba(40, 40, 40, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
     
     .glass-input {
-      background: rgba(20, 20, 20, 0.8);
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
   }
 }
@@ -109,6 +112,9 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent iOS text size adjust after orientation change */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 /* Improve input appearance on iOS */
@@ -118,12 +124,24 @@ textarea {
   -webkit-appearance: none;
   appearance: none;
   border-radius: 8px;
+  /* Prevent iOS shadow and rounded corners */
+  box-shadow: none;
+  /* Fix iOS rounded corners */
+  border-radius: 8px !important;
 }
 
-/* Fix for iOS input zoom */
+/* Fix for iOS input zoom and keyboard issues */
 @media screen and (max-width: 768px) {
   input, select, textarea {
     font-size: 16px !important;
+    /* Prevent iOS zoom on focus */
+    max-height: 100%;
+    min-height: 44px; /* iOS minimum touch target size */
+  }
+  
+  button {
+    min-height: 44px; /* iOS minimum touch target size */
+    padding: 0.5rem 1rem;
   }
 }
 
@@ -145,4 +163,30 @@ textarea {
 /* Prevent pull-to-refresh on mobile */
 body {
   overscroll-behavior-y: none;
+}
+
+/* iOS-specific fixes */
+@supports (-webkit-touch-callout: none) {
+  /* Fix for iOS momentum scrolling */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix for iOS sticky positioning */
+  .sticky {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+  
+  /* Fix for iOS 100vh issue */
+  .h-screen {
+    height: -webkit-fill-available;
+  }
+  
+  /* Fix for iOS rubber band effect */
+  html {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
 }
