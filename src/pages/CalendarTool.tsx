@@ -11,12 +11,14 @@ import { calculateDrugSequence } from '../utils/drugSequencing';
 import { DrugSequenceSummary } from '../components/DrugSequenceSummary';
 import { DrugSymbol } from '../components/DrugSymbol';
 import { saveToLocalStorage, loadFromLocalStorage, STORAGE_KEYS } from '../utils/localStorage';
+import styles from './CalendarTool.module.css';
 
 export default function CalendarTool() {
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [showFilteredDrugs, setShowFilteredDrugs] = useState(true);
+  const [activeCategoryFilter, setActiveCategoryFilter] = useState<string | null>(null);
   const [selectedDrugs, setSelectedDrugs] = useState<DrugType[]>(() => 
     loadFromLocalStorage<DrugType[]>(STORAGE_KEYS.SELECTED_DRUGS, [])
   );
@@ -197,6 +199,20 @@ export default function CalendarTool() {
   const generateCalendar = async () => {
     // Implementation of generateCalendar function
     setIsCalendarGenerated(true);
+  };
+
+  const handleReset = () => {
+    setSelectedDrugs([]);
+    setCustomSchedules({});
+    setTreatmentDurations({});
+    setSelectedSchedules({});
+    setDrugStartDates({});
+    setIsCalendarGenerated(false);
+    saveToLocalStorage(STORAGE_KEYS.SELECTED_DRUGS, []);
+    saveToLocalStorage(STORAGE_KEYS.CUSTOM_SCHEDULES, {});
+    saveToLocalStorage(STORAGE_KEYS.TREATMENT_DURATIONS, {});
+    saveToLocalStorage(STORAGE_KEYS.SELECTED_SCHEDULES, {});
+    saveToLocalStorage(STORAGE_KEYS.DRUG_START_DATES, {});
   };
 
   const filteredDrugs = useMemo(() => {
@@ -432,23 +448,96 @@ export default function CalendarTool() {
           <div onClick={(e) => {
             const category = (e.target as HTMLElement).closest('[data-category]')?.getAttribute('data-category');
             if (category) {
-              setSelectedCategories(prev => 
-                prev.includes(category) 
-                  ? prev.filter(cat => cat !== category)
-                  : [...prev, category]
-              );
+              setActiveCategoryFilter(prev => prev === category ? null : category);
+              if (!selectedCategories.includes(category)) {
+                setSelectedCategories(prev => [...prev, category]);
+              }
             }
           }}>
             <DrugLegend selectedCategories={selectedCategories} />
           </div>
 
-          {showFilteredDrugs && (
-            <DrugCategoryList
-              drugs={filteredDrugs}
-              selectedCategories={selectedCategories}
-              onDrugSelect={handleDrugSelect}
-              selectedDrugs={selectedDrugs}
-            />
+          {activeCategoryFilter && showFilteredDrugs && (
+            <div className="mt-4 glass-card p-4 rounded-lg animate-in fade-in slide-in-from-top-4 duration-200">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-3">
+                  <h3 className="text-sm font-medium text-white">
+                    {selectedCategories.length === 0 
+                      ? t('drugList.allCategories')
+                      : selectedCategories.map(cat => t(`categories.${cat}`)).join(', ')}
+                  </h3>
+                  <span className="text-xs text-white/60">
+                    {filteredDrugs.filter(drug => selectedCategories.length === 0 || selectedCategories.includes(drug.effect)).length} {t('drugList.medications')}
+                  </span>
+                </div>
+                <button
+                  onClick={() => setActiveCategoryFilter(null)}
+                  className="text-white/60 hover:text-white"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+              
+              {/* Vertical Scrolling Menu */}
+              <div className="relative">
+                <div className={`overflow-y-auto max-h-[60vh] pr-2 ${styles.hideScrollbar}`}>
+                  <div className="space-y-3">
+                    {filteredDrugs
+                      .filter(drug => selectedCategories.length === 0 || selectedCategories.includes(drug.effect))
+                      .map(drug => {
+                        const colors = drugColors[drug.effect];
+                        const isSelected = selectedDrugs.some(d => d.id === drug.id);
+                        
+                        return (
+                          <button
+                            key={drug.id}
+                            onClick={() => handleDrugSelect(drug)}
+                            className={`group relative w-full p-3 rounded-lg border transition-gpu backdrop-blur-sm animate-gpu
+                              ${isSelected 
+                                ? `${colors.bg} border-2 ${colors.text} shadow-lg` 
+                                : 'border-white/10 hover:border-white/20 hover:shadow-lg bg-white/5'}`}
+                          >
+                            <div className={`absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full transform transition-all duration-200 ${
+                              isSelected ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
+                            }`}>
+                              <div className={`absolute inset-0 ${colors.bg} border-2 border-white/20 rounded-full flex items-center justify-center shadow-lg`}>
+                                <Check className="w-3 h-3 text-white" />
+                              </div>
+                            </div>
+
+                            <div className="flex items-center space-x-3">
+                              <div className={`w-8 h-8 rounded-lg flex-shrink-0 flex items-center justify-center ${isSelected ? 'bg-white/20' : colors.bg}`}>
+                                <DrugSymbol symbol={drug.symbol} className={`text-base ${isSelected ? 'text-white' : ''}`} />
+                              </div>
+                              <div className="flex-1 min-w-0 text-left">
+                                <h3 className="text-sm font-medium text-white truncate">{drug.name}</h3>
+                                {drug.brandName && (
+                                  <p className="text-xs text-white/60 truncate">{drug.brandName}</p>
+                                )}
+                                <div className="mt-2 flex flex-wrap gap-1">
+                                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${colors.bg} ${colors.text}`}>
+                                    {drug.concentration}
+                                  </span>
+                                  <span className="flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-white/10 text-white/80">
+                                    {t(`drugTypes.${drug.type}`)}
+                                  </span>
+                                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${colors.bg} ${colors.text}`}>
+                                    {t(`categories.${drug.effect}`)}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                  </div>
+                </div>
+                
+                {/* Fade edges to indicate scrolling */}
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-black/20 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/20 to-transparent" />
+              </div>
+            </div>
           )}
         </div>
 
@@ -571,34 +660,45 @@ export default function CalendarTool() {
                         </div>
                       )}
                     </div>
-                    <button
-                      onClick={handleGenerateCalendar}
-                      className={`glass-button px-3 py-1.5 rounded-lg flex items-center justify-center transition-all duration-200 ${
-                        dateError ? 'opacity-50 cursor-not-allowed' : 
-                        isCalendarGenerated ? 'bg-green-500/20 hover:bg-green-500/30' :
-                        isGenerating ? 'bg-blue-500/20' : 'hover:bg-white/10'
-                      } group text-sm`}
-                      disabled={!!dateError || isGenerating}
-                    >
-                      {isGenerating ? (
-                        <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
-                      ) : isCalendarGenerated ? (
-                        <>
-                          <Check className="h-4 w-4 mr-1.5 text-green-400 group-hover:hidden" />
-                          <RefreshCw className="h-4 w-4 mr-1.5 hidden group-hover:block" />
-                        </>
-                      ) : (
-                        <CalendarIcon className="h-4 w-4 mr-1.5" />
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={handleGenerateCalendar}
+                        className={`glass-button flex-1 sm:flex-none px-3 py-1.5 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                          dateError ? 'opacity-50 cursor-not-allowed' : 
+                          isCalendarGenerated ? 'bg-green-500/20 hover:bg-green-500/30' :
+                          isGenerating ? 'bg-blue-500/20' : 'hover:bg-white/10'
+                        } group text-sm`}
+                        disabled={!!dateError || isGenerating}
+                      >
+                        {isGenerating ? (
+                          <RefreshCw className="h-4 w-4 mr-1.5 animate-spin" />
+                        ) : isCalendarGenerated ? (
+                          <>
+                            <Check className="h-4 w-4 mr-1.5 text-green-400 group-hover:hidden" />
+                            <RefreshCw className="h-4 w-4 mr-1.5 hidden group-hover:block" />
+                          </>
+                        ) : (
+                          <CalendarIcon className="h-4 w-4 mr-1.5" />
+                        )}
+                        <span>
+                          {isGenerating 
+                            ? "Generating..."
+                            : isCalendarGenerated 
+                              ? "Update Calendar"
+                              : "Generate Calendar"
+                          }
+                        </span>
+                      </button>
+                      {isCalendarGenerated && (
+                        <button
+                          onClick={handleReset}
+                          className="glass-button px-3 py-1.5 rounded-lg flex items-center justify-center transition-all duration-200 hover:bg-red-500/20 text-sm text-red-400"
+                        >
+                          <X className="h-4 w-4 mr-1.5" />
+                          <span>Reset</span>
+                        </button>
                       )}
-                      <span>
-                        {isGenerating 
-                          ? "Generating..."
-                          : isCalendarGenerated 
-                            ? "Update Calendar"
-                            : "Generate Calendar"
-                        }
-                      </span>
-                    </button>
+                    </div>
                   </div>
                 </div>
 
