@@ -136,13 +136,34 @@ body {
   }
   
   [data-category] {
-    min-height: 120px;
+    min-height: 130px;
   }
   
   .text-\[8px\], 
-  .text-\[10px\] {
+  .text-\[10px\],
+  .text-\[11px\] {
     font-size: 0.75rem;
     line-height: 1.25;
+  }
+
+  /* Improve text alignment and spacing in legend cards */
+  [data-category] .glass-card {
+    padding: 1rem 0.75rem;
+  }
+
+  [data-category] .flex-col {
+    gap: 0.5rem;
+  }
+
+  /* Ensure proper text margins */
+  [data-category] .text-xs,
+  [data-category] .text-sm {
+    margin-bottom: 0.25rem;
+  }
+
+  /* Add proper spacing around icons */
+  [data-category] .flex-shrink-0 {
+    margin-bottom: 0.75rem;
   }
 }
 
