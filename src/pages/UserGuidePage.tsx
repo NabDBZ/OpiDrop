@@ -295,7 +295,29 @@ export function UserGuidePage() {
                   </div>
                   {isAccessible && (
                     <div className="flex items-center space-x-2">
-                      {isComplete && <span className="text-sm text-green-400">Completed</span>}
+                      {isComplete ? (
+                        <div className="px-4 py-2 rounded-lg bg-green-500 text-white flex items-center space-x-2">
+                          <CheckCircle className="h-4 w-4" />
+                          <span>Completed</span>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={(e) => handleStepComplete(step.id, e)}
+                          className="glass-button-primary px-4 py-2 rounded-lg text-sm inline-flex items-center"
+                        >
+                          {index === steps.length - 1 ? (
+                            <>
+                              Complete Guide
+                              <CheckCircle className="h-4 w-4 ml-2" />
+                            </>
+                          ) : (
+                            <>
+                              Next Step
+                              <ArrowRight className="h-4 w-4 ml-2" />
+                            </>
+                          )}
+                        </button>
+                      )}
                       {isExpanded ? (
                         <ChevronUp className="h-5 w-5 text-white" />
                       ) : (
