@@ -8,16 +8,25 @@ import { performanceOptimizations } from '../utils/performanceOptimizations';
 
 type DrugCategoryListProps = {
   drugs: DrugType[];
-  selectedCategory: string | null;
+  selectedCategories: string[];
   onDrugSelect: (drug: DrugType) => void;
   selectedDrugs: DrugType[];
 };
 
-export function DrugCategoryList({ drugs, selectedCategory, onDrugSelect, selectedDrugs }: DrugCategoryListProps) {
+export function DrugCategoryList({ drugs, selectedCategories, onDrugSelect, selectedDrugs }: DrugCategoryListProps) {
   const { t } = useTranslation();
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
   const [showAllDrugs, setShowAllDrugs] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Effect to auto-expand selected categories
+  useEffect(() => {
+    setExpandedCategories(prev => {
+      const next = new Set(prev);
+      selectedCategories.forEach(category => next.add(category));
+      return next;
+    });
+  }, [selectedCategories]);
 
   // Memoize grouped drugs
   const groupedDrugs = React.useMemo(() => {
@@ -80,17 +89,17 @@ export function DrugCategoryList({ drugs, selectedCategory, onDrugSelect, select
             ? `${colors.bg} border-2 ${colors.text} shadow-lg` 
             : 'border-white/10 hover:border-white/20 hover:shadow-lg bg-white/5'}`}
       >
-        <div className={`absolute -top-3 -right-3 w-8 h-8 rounded-lg transform transition-gpu duration-200 ${
+        <div className={`absolute -top-2 -right-2 w-6 h-6 rounded-full transform transition-all duration-200 ${
           isSelected ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
         }`}>
-          <div className={`absolute inset-0 ${colors.bg} rounded-lg flex items-center justify-center`}>
-            <Check className="w-5 h-5 text-white" />
+          <div className={`absolute inset-0 ${colors.bg} border-2 border-white/20 rounded-full flex items-center justify-center shadow-lg`}>
+            <Check className="w-4 h-4 text-white" />
           </div>
         </div>
 
         <div className="flex items-start space-x-3">
-          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${colors.bg}`}>
-            <DrugSymbol symbol={drug.symbol} className="text-lg" />
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${isSelected ? 'bg-white/20' : colors.bg}`}>
+            <DrugSymbol symbol={drug.symbol} className={`text-lg ${isSelected ? 'text-white' : ''}`} />
           </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-base font-medium text-white truncate">{drug.name}</h3>

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { ArrowLeft, Search, RefreshCw, Filter, Clock, Calendar as CalendarIcon, AlertCircle, Check } from 'lucide-react';
+import { ArrowLeft, Search, RefreshCw, Filter, Clock, Calendar as CalendarIcon, AlertCircle, Check, Eye, EyeOff, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { drugDatabase } from '../data/drugDatabase';
@@ -15,7 +15,8 @@ import { saveToLocalStorage, loadFromLocalStorage, STORAGE_KEYS } from '../utils
 export default function CalendarTool() {
   const { t, i18n } = useTranslation();
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [showFilteredDrugs, setShowFilteredDrugs] = useState(true);
   const [selectedDrugs, setSelectedDrugs] = useState<DrugType[]>(() => 
     loadFromLocalStorage<DrugType[]>(STORAGE_KEYS.SELECTED_DRUGS, [])
   );
@@ -170,16 +171,25 @@ export default function CalendarTool() {
   };
 
   const filteredDrugs = useMemo(() => {
-    return drugDatabase.filter(drug => {
-      const matchesSearch = searchQuery.toLowerCase() === '' ||
-        drug.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (drug.brandName && drug.brandName.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      const matchesCategory = !selectedCategory || drug.effect === selectedCategory;
-      
-      return matchesSearch && matchesCategory;
-    });
-  }, [searchQuery, selectedCategory]);
+    return drugDatabase
+      .filter(drug => {
+        const matchesSearch = searchQuery.toLowerCase() === '' ||
+          drug.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (drug.brandName && drug.brandName.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(drug.effect);
+        
+        return matchesSearch && matchesCategory;
+      })
+      .sort((a, b) => {
+        // First sort by category
+        const categoryCompare = a.effect.localeCompare(b.effect);
+        if (categoryCompare !== 0) return categoryCompare;
+        
+        // Then sort alphabetically by name
+        return a.name.localeCompare(b.name);
+      });
+  }, [searchQuery, selectedCategories]);
 
   const handleDrugSelect = (drug: DrugType) => {
     setSelectedDrugs(prev => {
@@ -251,16 +261,32 @@ export default function CalendarTool() {
               <div className="relative">
                 <Filter className="absolute left-2 sm:left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 sm:h-5 sm:w-5 text-white/50" />
                 <select
-                  value={selectedCategory || ''}
-                  onChange={(e) => setSelectedCategory(e.target.value || null)}
+                  value=""
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (value) {
+                      setSelectedCategories(prev => 
+                        prev.includes(value) 
+                          ? prev.filter(cat => cat !== value)
+                          : [...prev, value]
+                      );
+                    }
+                  }}
                   className="glass-input w-full h-8 sm:h-9 pl-8 sm:pl-10 pr-6 sm:pr-8 rounded-lg appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white bg-white/5 text-sm"
                 >
-                  <option value="">{t('calendar.allCategories')}</option>
-                  {drugCategories.map(category => (
-                    <option key={category.value} value={category.value}>
-                      {category.label}
-                    </option>
-                  ))}
+                  <option value="">{selectedCategories.length === 0 ? t('calendar.allCategories') : `${selectedCategories.length} categories selected`}</option>
+                  {drugCategories.map(category => {
+                    const isSelected = selectedCategories.includes(category.value);
+                    return (
+                      <option 
+                        key={category.value} 
+                        value={category.value}
+                        className={isSelected ? 'bg-blue-500/20' : ''}
+                      >
+                        {isSelected ? `✓ ${category.label}` : category.label}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             </div>
@@ -281,23 +307,39 @@ export default function CalendarTool() {
                 <div className="relative">
                   <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/50" />
                   <select
-                    value={selectedCategory || ''}
-                    onChange={(e) => setSelectedCategory(e.target.value || null)}
+                    value=""
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value) {
+                        setSelectedCategories(prev => 
+                          prev.includes(value) 
+                            ? prev.filter(cat => cat !== value)
+                            : [...prev, value]
+                        );
+                      }
+                    }}
                     className="glass-input pl-10 pr-8 py-2 rounded-lg appearance-none focus:outline-none focus:ring-1 focus:ring-blue-500/50 text-white bg-white/5"
                   >
-                    <option value="">{t('calendar.allCategories')}</option>
-                    {drugCategories.map(category => (
-                      <option key={category.value} value={category.value}>
-                        {category.label}
-                      </option>
-                    ))}
+                    <option value="">{selectedCategories.length === 0 ? t('calendar.allCategories') : `${selectedCategories.length} categories selected`}</option>
+                    {drugCategories.map(category => {
+                      const isSelected = selectedCategories.includes(category.value);
+                      return (
+                        <option 
+                          key={category.value} 
+                          value={category.value}
+                          className={isSelected ? 'bg-blue-500/20' : ''}
+                        >
+                          {isSelected ? `✓ ${category.label}` : category.label}
+                        </option>
+                      );
+                    })}
                   </select>
                 </div>
-                {(searchQuery || selectedCategory) && (
+                {(searchQuery || selectedCategories.length > 0) && (
                   <button
                     onClick={() => {
                       setSearchQuery('');
-                      setSelectedCategory(null);
+                      setSelectedCategories([]);
                     }}
                     className="glass-button p-2 rounded-lg bg-white/5"
                   >
@@ -307,17 +349,47 @@ export default function CalendarTool() {
               </div>
             </div>
 
-            {/* Search Results Count */}
-            {(searchQuery || selectedCategory) && (
-              <div className="text-xs sm:text-sm text-white/60 mt-1">
-                {filteredDrugs.length === 0 ? (
-                  t('drugList.noResults')
-                ) : (
-                  t('drugList.resultsFound', {
-                    count: filteredDrugs.length,
-                    medication: filteredDrugs.length === 1 ? t('drugList.medication') : t('drugList.medications')
-                  })
-                )}
+            {/* Search Results Count and Controls */}
+            {(searchQuery || selectedCategories.length > 0) && (
+              <div className="flex items-center justify-between text-xs sm:text-sm text-white/60 mt-1">
+                <div>
+                  {filteredDrugs.length === 0 ? (
+                    t('drugList.noResults')
+                  ) : (
+                    t('drugList.resultsFound', {
+                      count: filteredDrugs.length,
+                      medication: filteredDrugs.length === 1 ? t('drugList.medication') : t('drugList.medications')
+                    })
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowFilteredDrugs(!showFilteredDrugs)}
+                    className="glass-button px-2 py-1 rounded-lg flex items-center gap-1 hover:bg-white/10"
+                  >
+                    {showFilteredDrugs ? (
+                      <>
+                        <Eye className="w-4 h-4" />
+                        <span className="hidden sm:inline">Hide Results</span>
+                      </>
+                    ) : (
+                      <>
+                        <EyeOff className="w-4 h-4" />
+                        <span className="hidden sm:inline">Show Results</span>
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedCategories([]);
+                    }}
+                    className="glass-button px-2 py-1 rounded-lg flex items-center gap-1 hover:bg-white/10 text-red-400"
+                  >
+                    <X className="w-4 h-4" />
+                    <span className="hidden sm:inline">Clear Filters</span>
+                  </button>
+                </div>
               </div>
             )}
           </div>
@@ -327,18 +399,24 @@ export default function CalendarTool() {
           <div onClick={(e) => {
             const category = (e.target as HTMLElement).closest('[data-category]')?.getAttribute('data-category');
             if (category) {
-              setSelectedCategory(category === selectedCategory ? null : category);
+              setSelectedCategories(prev => 
+                prev.includes(category) 
+                  ? prev.filter(cat => cat !== category)
+                  : [...prev, category]
+              );
             }
           }}>
-            <DrugLegend />
+            <DrugLegend selectedCategories={selectedCategories} />
           </div>
 
-          <DrugCategoryList
-            drugs={filteredDrugs}
-            selectedCategory={selectedCategory}
-            onDrugSelect={handleDrugSelect}
-            selectedDrugs={selectedDrugs}
-          />
+          {showFilteredDrugs && (
+            <DrugCategoryList
+              drugs={filteredDrugs}
+              selectedCategories={selectedCategories}
+              onDrugSelect={handleDrugSelect}
+              selectedDrugs={selectedDrugs}
+            />
+          )}
         </div>
 
         <div className="md:hidden">
@@ -346,7 +424,7 @@ export default function CalendarTool() {
             <div className="grid grid-cols-3 gap-1.5 sm:gap-2">
               {drugCategories.map(category => {
                 const colors = drugColors[category.value as keyof typeof drugColors];
-                const isSelected = selectedCategory === category.value;
+                const isSelected = selectedCategories.includes(category.value);
                 const categoryDrug = drugDatabase.find(drug => drug.effect === category.value);
                 const defaultSymbol = drugDatabase[0]?.symbol || 'A';
                 const symbol = categoryDrug?.symbol || defaultSymbol;
@@ -354,13 +432,26 @@ export default function CalendarTool() {
                 return (
                   <button
                     key={category.value}
-                    onClick={() => setSelectedCategory(isSelected ? null : category.value)}
-                    className={`p-1.5 sm:p-2 rounded-lg transition-all flex flex-col items-center ${
+                    onClick={() => setSelectedCategories(prev => 
+                      prev.includes(category.value) 
+                        ? prev.filter(cat => cat !== category.value)
+                        : [...prev, category.value]
+                    )}
+                    className={`relative p-1.5 sm:p-2 rounded-lg transition-all flex flex-col items-center ${
                       isSelected 
                         ? `${colors.bg} ${colors.text} shadow-lg` 
                         : 'bg-white/10 hover:bg-white/20'
                     }`}
                   >
+                    {/* Checkmark Badge */}
+                    <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full transform transition-all duration-200 ${
+                      isSelected ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
+                    }`}>
+                      <div className={`absolute inset-0 ${colors.bg} border-2 border-white/20 rounded-full flex items-center justify-center shadow-lg`}>
+                        <Check className="w-3 h-3 text-white" />
+                      </div>
+                    </div>
+
                     <div className={`w-8 h-8 sm:w-10 sm:h-10 mb-1 sm:mb-2 rounded-lg flex items-center justify-center ${
                       isSelected ? 'bg-white/20' : colors.bg
                     }`}>
@@ -378,7 +469,7 @@ export default function CalendarTool() {
           </div>
 
           {/* Filtered Drugs List - Mobile */}
-          {filteredDrugs.length > 0 && selectedCategory && (
+          {showFilteredDrugs && filteredDrugs.length > 0 && selectedCategories.length > 0 && (
             <div className="glass-card p-2 sm:p-3 mb-4">
               <div className="grid grid-cols-1 gap-2 sm:gap-3">
                 {filteredDrugs.map(drug => {
