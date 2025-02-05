@@ -132,38 +132,73 @@ body {
 /* Mobile optimizations */
 @media screen and (max-width: 640px) {
   .glass-card {
-    padding: 1rem;
+    padding: 1.25rem;
   }
   
   [data-category] {
-    min-height: 130px;
+    min-height: 150px;
   }
   
-  .text-\[8px\], 
-  .text-\[10px\],
-  .text-\[11px\] {
-    font-size: 0.75rem;
-    line-height: 1.25;
-  }
-
   /* Improve text alignment and spacing in legend cards */
   [data-category] .glass-card {
-    padding: 1rem 0.75rem;
+    padding: 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
   }
 
   [data-category] .flex-col {
-    gap: 0.5rem;
+    gap: 0.75rem;
   }
 
-  /* Ensure proper text margins */
+  /* Ensure proper text margins and sizing */
   [data-category] .text-xs,
   [data-category] .text-sm {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem; /* 14px */
+    line-height: 1.25;
+  }
+
+  [data-category] .text-base {
+    font-size: 1rem; /* 16px */
+    line-height: 1.5;
   }
 
   /* Add proper spacing around icons */
   [data-category] .flex-shrink-0 {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Improve text container spacing */
+  [data-category] .flex-1 {
+    padding: 0 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Ensure proper word breaks */
+  [data-category] .break-words {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+}
+
+/* iOS-specific adjustments */
+@supports (-webkit-touch-callout: none) {
+  [data-category] .glass-card {
+    padding: 1.25rem 1rem;
+  }
+
+  [data-category] .flex-1 {
+    padding: 0 0.75rem;
+  }
+
+  /* Ensure text doesn't overflow */
+  [data-category] .text-xs,
+  [data-category] .text-sm,
+  [data-category] .text-base {
+    max-width: 100%;
+    display: block;
   }
 }
 
